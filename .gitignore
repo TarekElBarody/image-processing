@@ -5,6 +5,8 @@ backend/.env.test
 backend/node_modules
 backend/node_modules/*
 backend/build
+backend/images
+backend/images/*
 backend/build/*
 backend/public
 backend/public/*
