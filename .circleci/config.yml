@@ -13,10 +13,10 @@ jobs:
           configure-profile-region: true 
           disable-aws-pager: true 
           override-installed: false 
-          aws-access-key-id: $AWS_CLI_ACCESS_KEY_ID	 
-          aws-secret-access-key: $AWS_CLI_SECRET_ACCESS_KEY 
-          aws-region: $AWS_CLI_REGION 
-          profile-name: $AWS_CLI_PROFILE_NAME
+          aws-access-key-id: "$AWS_CLI_ACCESS_KEY_ID"	 
+          aws-secret-access-key: "$AWS_CLI_SECRET_ACCESS_KEY" 
+          aws-region: "$AWS_CLI_REGION" 
+          profile-name: "$AWS_CLI_PROFILE_NAME"
       - checkout
       - run:
           name: Front-End Install
