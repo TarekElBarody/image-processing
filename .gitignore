@@ -17,14 +17,11 @@
 */.ebextensions
 */.ebextensions/*
 */.ebextensions/variables.config
-*/backend/.ebextensions
-*/backend/.ebextensions/*
-*/backend/.ebextensions/variables.config
-*/!.eslintrc
-*/!.prettierrc
-*/!nodemon.json
+!*/.eslintrc
+!*/.prettierrc
+!*/nodemon.json
 */# Elastic Beanstalk Files
 */.elasticbeanstalk/*
-*/!.elasticbeanstalk/*.cfg.yml
-*/!.elasticbeanstalk/*.global.yml
+!*/.elasticbeanstalk/*.cfg.yml
+!*/.elasticbeanstalk/*.global.yml
 
