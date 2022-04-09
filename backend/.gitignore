@@ -16,6 +16,7 @@ logs
 logs/*
 .ebextensions
 .ebextensions/*
+.ebextensions/variables.config
 !.eslintrc
 !.prettierrc
 !nodemon.json
