@@ -4,7 +4,11 @@
   "description": "Full Image Processing API Backend with Frontend for Handling Images from API",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "frontend:install": "cd frontend && npm install",
+    "frontend:build": "cd frontend && npm run build",
+    "backend:install": "cd backend && npm install",
+    "backend:build": "cd backend && npm run build"
+
   },
   "repository": {
     "type": "git",
@@ -15,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/TarekElBarody/image-processing/issues"
   },
-  "homepage": "https://github.com/TarekElBarody/image-processing#readme"
+  "homepage": "https://github.com/TarekElBarody/image-processing#readme",
+  "engines": {
+    "node": ">=16.13.2"
+  }
 }

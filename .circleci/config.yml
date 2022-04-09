@@ -1,0 +1,28 @@
+version: 2.1
+orbs:
+  node: circleci/node@16.13.2
+  aws-cli: circleci/aws-cli@2.4.27
+  eb-cli: circleci/eb-cli@3.20.3
+jobs:
+  build:
+    docker:
+      - image: "cimg/base:stable"
+    steps:
+      - node/install
+      - checkout
+      - run:
+          name: Front-End Install
+          command: |
+            npm run frontend:install
+      - run:
+          name: Back-End Install
+          command: |
+            npm run backend:install
+      - run:
+          name: Front-End Build
+          command: |
+            npm run frontend:build
+      - run:
+          name: Back-End Build
+          command: |
+            npm run backend:build
