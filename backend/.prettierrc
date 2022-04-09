@@ -1,0 +1,8 @@
+{
+    "semi": true,
+    "singleQuote": true,
+    "filepath": "src/**/*.ts",
+    "trailingComma": "none",
+    "parser": "typescript"   
+}
+  

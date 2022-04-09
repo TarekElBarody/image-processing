@@ -1,0 +1,11 @@
+CREATE TABLE users (
+  id uuid DEFAULT gen_random_uuid () PRIMARY KEY,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
+  birthday DATE NOT NULL,
+  email VARCHAR(200) UNIQUE NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  mobile VARCHAR(20) UNIQUE NOT NULL,
+  role INTEGER NOT NULL DEFAULT 3,
+  created TIMESTAMP DEFAULT NOW()
+);

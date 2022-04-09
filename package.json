@@ -1,0 +1,19 @@
+{
+  "name": "image-processing",
+  "version": "1.0.0",
+  "description": "Full Image Processing API Backend with Frontend for Handling Images from API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TarekElBarody/image-processing.git"
+  },
+  "author": "Tarek El-Barody",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TarekElBarody/image-processing/issues"
+  },
+  "homepage": "https://github.com/TarekElBarody/image-processing#readme"
+}

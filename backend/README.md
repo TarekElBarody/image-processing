@@ -1,4 +1,4 @@
-# Image Processing API Frontend & Backend With Deployment
+# Image Processing API
 
 This is a starter application that contains generic configurations, code formatter, error checking, code checking, and test modules to check the effectiveness of the application over 30 code checks. Using [`nodeJS`](https://nodejs.org/en/) with [`Express`](https://www.npmjs.com/package/expresss), [`TypeScript`](https://www.npmjs.com/package/typescript) , [`ESlint`](https://www.npmjs.com/package/eslint), [`Prettier`](https://www.npmjs.com/package/prettier) , [`Jasmine`](https://www.npmjs.com/package/jasmine) , [`supertest`](https://www.npmjs.com/package/supertest) , [`Sharp`](https://www.npmjs.com/package/sharp) , [`multer`](https://www.npmjs.com/package/multer) , [`compression`](https://www.npmjs.com/package/compression) , [`bcrypt`](https://www.npmjs.com/package/bcrypt) , [`body-parser`](https://www.npmjs.com/package/body-parser) , [`morgan`](https://www.npmjs.com/package/morgan) modules . 
 - The application supports SSL and is ready to work on both HTTP and HTTPS.
