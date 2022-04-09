@@ -19,9 +19,9 @@
     "test-migrate": "npm run test-migrate-reset && npm run test-migrate-up",
     "test": "ENV=test npm run test-migrate && npm run build && ENV=test jasmine",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir dist --onSuccess \"node dist/server.js\"",
-    "start": "npm run migrate && npm run serve",
+    "start": "pm2 start dist/server.js",
     "deploy": "chmod +x bin/deploy.sh && bin/deploy.sh"
-    },
+  },
   "author": "Tarek El-Barody",
   "license": "MIT",
   "devDependencies": {
@@ -76,6 +76,7 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.4",
     "pg": "^8.7.3",
+    "pm2": "^5.2.0",
     "pretty-ms": "^7.0.1",
     "rotating-file-stream": "^3.0.3",
     "sharp": "^0.30.1",
