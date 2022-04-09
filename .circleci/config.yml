@@ -1,8 +1,7 @@
 version: 2.1
 orbs:
-  node: circleci/node@16.13.2
-  aws-cli: circleci/aws-cli@2.4.27
-  eb-cli: circleci/eb-cli@3.20.3
+  node: circleci/node@5.0.2
+  aws-cli: circleci/aws-cli@3.0.0
 jobs:
   build:
     docker:
