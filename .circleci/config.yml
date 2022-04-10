@@ -15,9 +15,10 @@ jobs:
           configure-profile-region: true 
           disable-aws-pager: true 
           override-installed: false 
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          aws-region: AWS_REGION
+          aws-access-key-id: $AWS_ACCESS_KEY_ID
+          aws-secret-access-key: $AWS_SECRET_ACCESS_KEY
+          aws-region: $AWS_REGION
+          aws_default_region: $AWS_DEFAULT_REGION
           profile-name: "eb-cli"        
       - run:
           name: Installing deployment dependencies

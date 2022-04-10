@@ -54,6 +54,7 @@ const imageHistory = async (
     } else {
       // if file not exists return no history
       res.status(200).json({
+        data: [],
         message: 'no history detected'
       });
     }
