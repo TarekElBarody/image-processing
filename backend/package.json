@@ -19,9 +19,9 @@
     "test-migrate": "npm run test-migrate-reset && npm run test-migrate-up",
     "test": "ENV=test npm run test-migrate && npm run build && ENV=test jasmine",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir dist --onSuccess \"node dist/server.js\"",
-    "start": "pm2 start dist/server.js",
+    "start": "ENV=production node dist/server.js",
     "deploy": "chmod +x bin/deploy.sh && bin/deploy.sh"
-  },
+    },
   "author": "Tarek El-Barody",
   "license": "MIT",
   "devDependencies": {
@@ -38,7 +38,7 @@
     "@types/multer": "^1.4.7",
     "@types/node": "^17.0.14",
     "@types/pg": "^8.6.4",
-    "@types/sharp": "^0.30.1",
+    "@types/sharp": "^0.29.5",
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.10.2",
     "@typescript-eslint/parser": "^5.10.2",
@@ -52,10 +52,9 @@
     "typescript": "^4.5.5"
   },
   "dependencies": {
-    "aws-sdk": "^2.1111.0",
+    "aws-sdk": "^2.1103.0",
     "bcryptjs": "^2.4.3",
     "compression": "^1.7.4",
-    "core-js": "^3.21.1",
     "cors": "^2.8.5",
     "db-migrate": "^0.11.13",
     "db-migrate-pg": "^1.2.2",
@@ -71,9 +70,8 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.4",
     "pg": "^8.7.3",
-    "pm2": "^5.2.0",
     "pretty-ms": "^7.0.1",
-    "sharp": "^0.30.3",
+    "sharp": "^0.30.1",
     "supertest": "^6.2.2"
   },
   "engines": {

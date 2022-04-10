@@ -1,4 +1,4 @@
 #!/bin/bash
+eb use Imageprocessingbackend-env
 eb deploy
-
-aws cloudfront create-invalidation --distribution-id E3SRADI6HYOK0D --paths "/*"
+aws cloudfront create-invalidation --distribution-id EGJUPFQMKH5XJ --paths "/*"

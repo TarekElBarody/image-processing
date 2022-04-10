@@ -121,7 +121,8 @@ app.use(session(sess));
 app.use('/api', apiRoute);
 
 app.use((_req: express.Request, res: express.Response): void => {
-  res.status(404).json({
+  res.status(200).json({
+    error: true,
     message: 'API Page Not Found !.'
   });
 });
