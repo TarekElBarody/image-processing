@@ -60,13 +60,13 @@ const handelCachedThumb = async (
       height: fullImage.height,
       created: fullImage.created,
       access: fullImage.access,
-      url: `//${process.env.AWS_CLOUD_FRONT || ''}/api/images/${
+      url: `https://${process.env.AWS_CLOUD_FRONT || ''}/api/images/${
         fullImage.filename
       }`,
       thumb: {
         id: thumb.id,
         image_id: thumb.image_id,
-        url: `//${
+        url: `https://${
           process.env.AWS_CLOUD_FRONT || ''
         }/api/images/thumb/${thumbFileName}`,
         width: thumb.width,

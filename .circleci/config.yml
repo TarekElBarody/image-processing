@@ -47,11 +47,6 @@ jobs:
           command: |
             npm run frontend:deploy
       - run:
-          name: Back-End Set Environment
-          command: |
-            echo AWS_REGION
-            echo $AWS_REGION
-      - run:
           name: Back-End Deploy
           command: |
             npm run backend:deploy
