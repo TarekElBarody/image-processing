@@ -17,14 +17,15 @@ jobs:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           aws-region: AWS_REGION
-          profile-name: AWS_PROFILE_NAME
+          profile-name: "eb-cli"
       - run:
           name: Installing deployment dependencies
           working_directory: /
           command: |
             sudo apt-get -y -qq update
-            sudo apt-get install python3-pip python3-dev build-essential
-            sudo pip3 install awsebcli
+            sudo apt-get install python3.7
+            git clone https://github.com/aws/aws-elastic-beanstalk-cli-setup.git
+            python ./aws-elastic-beanstalk-cli-setup/scripts/ebcli_installer.py
       - run:
           name: Front-End Install
           command: |
