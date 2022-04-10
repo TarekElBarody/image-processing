@@ -10,7 +10,7 @@ dotenv.config();
 const s3 = new s3Client();
 
 const handelCachedThumb = async (
-  req: express.Request,
+  _req: express.Request,
   res: express.Response,
   pathNames: FilePaths,
   imageReq: ImageRequest,
@@ -60,13 +60,13 @@ const handelCachedThumb = async (
       height: fullImage.height,
       created: fullImage.created,
       access: fullImage.access,
-      url: `${req.protocol}://${process.env.AWS_CLOUD_FRONT || ''}/api/images/${
+      url: `//${process.env.AWS_CLOUD_FRONT || ''}/api/images/${
         fullImage.filename
       }`,
       thumb: {
         id: thumb.id,
         image_id: thumb.image_id,
-        url: `${req.protocol}://${
+        url: `//${
           process.env.AWS_CLOUD_FRONT || ''
         }/api/images/thumb/${thumbFileName}`,
         width: thumb.width,

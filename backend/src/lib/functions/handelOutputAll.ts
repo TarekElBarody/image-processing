@@ -8,7 +8,7 @@ dotenv.config();
 const thumbStore = new ThumbStore();
 
 const handelOutputAll = async (
-  req: express.Request,
+  _req: express.Request,
   res: express.Response,
   pathNames: FilePaths,
   imageReq: ImageRequest,
@@ -28,7 +28,7 @@ const handelOutputAll = async (
     fetchThumbs.push({
       id: getThumbFiles[i].id,
       image_id: getThumbFiles[i].image_id,
-      url: `${req.protocol}://${
+      url: `//${
         process.env.AWS_CLOUD_FRONT || ''
       }/api/images/thumb/${thumbFileName}`,
       width: getThumbFiles[i].width,
@@ -47,7 +47,7 @@ const handelOutputAll = async (
     height: pathNames.fullImage?.height,
     created: pathNames.fullImage?.created,
     access: pathNames.fullImage?.access,
-    url: `${req.protocol}://${process.env.AWS_CLOUD_FRONT || ''}/api/images/${
+    url: `//${process.env.AWS_CLOUD_FRONT || ''}/api/images/${
       pathNames.fullImage?.filename
     }`,
     thumbs: fetchThumbs

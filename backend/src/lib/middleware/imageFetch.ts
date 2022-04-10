@@ -183,14 +183,14 @@ const imageFetch = async (
                 height: fullImage.height,
                 created: fullImage.created,
                 access: fullImage.access,
-                url: `${req.protocol}://${
-                  process.env.AWS_CLOUD_FRONT || ''
-                }/api/images/${fullImage.filename}`,
+                url: `//${process.env.AWS_CLOUD_FRONT || ''}/api/images/${
+                  fullImage.filename
+                }`,
                 thumb: {
                   id: newThumb.id,
                   image_id: newThumb.image_id,
                   user_id: fullImage.user_id,
-                  url: `${req.protocol}://${
+                  url: `//${
                     process.env.AWS_CLOUD_FRONT || ''
                   }/api/images/thumb/${thumbFileName}`,
                   width: newThumb.width,

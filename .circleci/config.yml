@@ -18,7 +18,7 @@ jobs:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           aws-region: AWS_REGION
-          profile-name: "eb-cli"
+          profile-name: "eb-cli"        
       - run:
           name: Installing deployment dependencies
           working_directory: /
@@ -46,6 +46,11 @@ jobs:
           name: Front-End Deploy
           command: |
             npm run frontend:deploy
+      - run:
+          name: Back-End Set Environment
+          command: |
+            echo AWS_REGION
+            echo $AWS_REGION
       - run:
           name: Back-End Deploy
           command: |
