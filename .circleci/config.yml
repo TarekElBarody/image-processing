@@ -8,6 +8,7 @@ jobs:
       - image: "cimg/base:stable"
     steps:
       - node/install
+      - checkout
       - aws-cli/setup:
           configure-default-region: true 
           configure-profile-region: true 
@@ -17,7 +18,13 @@ jobs:
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           aws-region: AWS_REGION
           profile-name: AWS_PROFILE_NAME
-      - checkout
+      - run:
+          name: Installing deployment dependencies
+          working_directory: /
+          command: |
+            sudo apt-get -y -qq update
+            sudo apt-get install python3-pip python3-dev build-essential
+            sudo pip3 install awsebcli
       - run:
           name: Front-End Install
           command: |
