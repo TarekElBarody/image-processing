@@ -60,6 +60,7 @@ const imageHistory = async (
   } else {
     // if user not logged in return an error message
     res.status(401).json({
+      data: [],
       message: 'you have to log in to your dashboard first to can call this'
     });
   }
