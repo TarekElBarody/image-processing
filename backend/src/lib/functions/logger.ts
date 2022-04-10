@@ -20,7 +20,7 @@ export default class logger {
   constructor(log: string) {
     this.errorMessage = '';
     // check if node in development
-    this.isDev = (process.env.NODE_ENV || 'dev') == 'dev' ? true : false;
+    this.isDev = (process.env.ENV || 'dev') == 'dev' ? true : false;
     this.logFile = log + '.log';
     this.logDir = path.resolve('./logs');
     this.timeStart = 0;

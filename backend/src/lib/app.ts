@@ -16,7 +16,7 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 const sslPort = process.env.SSL_PORT || 4000;
-const env = process.env.NODE_ENV || 'dev';
+const env = process.env.ENV || 'dev';
 
 // Set up the allowed CORS Origins & CORS Options
 app.use(
