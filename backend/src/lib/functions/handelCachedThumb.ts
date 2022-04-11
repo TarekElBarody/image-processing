@@ -1,13 +1,11 @@
 import express from 'express';
 import { FilePaths, ImageRequest } from '../../types/ImageRequest';
 import logger from './logger';
-import s3Client from '../functions/s3Client';
 import { Thumb, Image } from '../../types/index';
 import dotenv from 'dotenv';
+import axios from 'axios';
 
 dotenv.config();
-
-const s3 = new s3Client();
 
 const handelCachedThumb = async (
   _req: express.Request,
@@ -22,8 +20,15 @@ const handelCachedThumb = async (
   const thumbFileName = `${thumb.filename}`;
 
   if (imageReq.out == 'img') {
-    const s3Res = await s3.getContent(thumb.bucket_key as string);
-    if (s3Res.data?.Body) {
+    const url = `https://${process.env.AWS_CLOUD_FRONT_BUCKET}/${pathNames.thumbDir}/${thumb.filename}`;
+    const response = await axios.get(url, { responseType: 'arraybuffer' });
+
+    if (
+      response.status === 200 ||
+      response.status === 204 ||
+      response.status === 302
+    ) {
+      const buffer = Buffer.from(response.data, 'utf-8');
       // if output is img serve the thumb then log
       res.header(
         'Cache-Control',
@@ -33,9 +38,9 @@ const handelCachedThumb = async (
 
       res // set the last modified header to state file
         .setHeader('last-modified', (thumb.modified as Date).toDateString())
-        .contentType('image/jpeg')
+        .contentType(response.headers['content-type'])
         .status(imageReq.catching === 1 ? 302 : 200) // set the status cose 302 not modified
-        .send(s3Res.data?.Body); // send cached file to user
+        .send(buffer); // send cached file to user
 
       // log the event in console & file log
       imageLog.end();
@@ -44,10 +49,10 @@ const handelCachedThumb = async (
       );
       return;
     } else {
-      res.status(400).json({ message: s3Res.err });
+      res.status(400).json({ message: response.statusText });
       // log the event in console & file log
       imageLog.end();
-      imageLog.logT(s3Res.err);
+      imageLog.logT(response.statusText);
       return;
     }
   } else if (imageReq.out == 'json') {
@@ -60,14 +65,14 @@ const handelCachedThumb = async (
       height: fullImage.height,
       created: fullImage.created,
       access: fullImage.access,
-      url: `https://${process.env.AWS_CLOUD_FRONT || ''}/api/images/${
+      url: `https://${process.env.AWS_CLOUD_FRONT_SERVER || ''}/api/images/${
         fullImage.filename
       }`,
       thumb: {
         id: thumb.id,
         image_id: thumb.image_id,
         url: `https://${
-          process.env.AWS_CLOUD_FRONT || ''
+          process.env.AWS_CLOUD_FRONT_SERVER || ''
         }/api/images/thumb/${thumbFileName}`,
         width: thumb.width,
         height: thumb.height,

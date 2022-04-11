@@ -12,6 +12,7 @@ import ThumbStore from '../../models/thumbStore';
 import { randomUUID } from 'crypto';
 import { dateNow } from '../functions/general';
 import dotenv from 'dotenv';
+import axios from 'axios';
 
 dotenv.config();
 const thumbStore = new ThumbStore();
@@ -44,11 +45,7 @@ const imageFetch = async (
     const ext = extArray[extArray.length - 1];
 
     const imageReq: ImageRequest = {
-      filename: /\.(gif|jpe?g|tiff?|png|webp|jp2|avif|heif)$/i.test(
-        req.params.filename as string
-      )
-        ? (req.params.filename as string)
-        : '', // default to empty string using safeString to Safe Pass File names
+      filename: fileNamePattern, // default to empty string using safeString to Safe Pass File names
       width: parseInt(req.query.width as string) || 0, // Default to 0 mean the original width of the image
       height: parseInt(req.query.height as string) || 0, // Default to 0 mean the original height  of the image
       format: safeString((req.query.format as string) || ext), // jpeg  png webp gif jp2 tiff avif heif raw Default is jpg
@@ -59,7 +56,6 @@ const imageFetch = async (
           ? safeString(req.query.out as string)
           : 'img' // use img. json or all output process, default 'img'
     };
-    console.log(imageReq);
     // get the full path & thumb path by providing image properties
     let pathNames: FilePaths;
     if (imageReq.filename != '') {
@@ -74,8 +70,6 @@ const imageFetch = async (
       imageLog.log(`Error processing image No file name provided `);
       return;
     }
-
-    console.log(pathNames);
 
     if (pathNames.success != true) {
       res.status(400).json({
@@ -102,11 +96,18 @@ const imageFetch = async (
     }
 
     const fullImage = pathNames.fullImage as Image;
-    const bucket = await s3.getContent(fullImage.bucket_key as string);
+
+    const url = `https://${process.env.AWS_CLOUD_FRONT_BUCKET}/${pathNames.fullDir}/${fullImage.filename}`;
+    const response = await axios.get(url, { responseType: 'arraybuffer' });
+
     // check if the full image path exists to process image resize
-    if (bucket.data?.Body) {
+    if (
+      response.status === 200 ||
+      response.status === 204 ||
+      response.status === 302
+    ) {
       // get original file properties
-      const buffer = bucket.data?.Body as Buffer;
+      const buffer = Buffer.from(response.data, 'utf-8');
 
       let toWidth = imageReq.width == 0 ? fullImage.width : imageReq.width; // set the original width as default
       let toHeight = imageReq.height == 0 ? fullImage.height : imageReq.height; // set the original height as default
@@ -145,6 +146,8 @@ const imageFetch = async (
         .toBuffer(); // processing resizing
 
       const info = await sharp(resizedImage).metadata();
+      console.log(info);
+
       const thumbID = randomUUID();
       const thumbFileName = `${thumbID.split('-').join('')}_${fullImage.id
         .split('-')
@@ -183,15 +186,15 @@ const imageFetch = async (
                 height: fullImage.height,
                 created: fullImage.created,
                 access: fullImage.access,
-                url: `https://${process.env.AWS_CLOUD_FRONT || ''}/api/images/${
-                  fullImage.filename
-                }`,
+                url: `https://${
+                  process.env.AWS_CLOUD_FRONT_SERVER || ''
+                }/api/images/${fullImage.filename}`,
                 thumb: {
                   id: newThumb.id,
                   image_id: newThumb.image_id,
                   user_id: fullImage.user_id,
                   url: `https://${
-                    process.env.AWS_CLOUD_FRONT || ''
+                    process.env.AWS_CLOUD_FRONT_SERVER || ''
                   }/api/images/thumb/${thumbFileName}`,
                   width: newThumb.width,
                   height: newThumb.height,

@@ -89,7 +89,7 @@ const uploadImages = async (
             res.status(200).json({
               status: 'success',
               message: `File Uploaded successfully`,
-              image: `https://${process.env.AWS_CLOUD_FRONT}/api/images/${disName}`
+              image: `https://${process.env.AWS_CLOUD_FRONT_SERVER}/api/images/${disName}`
             });
 
             userAccess.end(); // end the log time function event

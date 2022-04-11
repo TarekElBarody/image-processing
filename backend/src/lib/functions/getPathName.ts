@@ -39,9 +39,7 @@ const getPathName = async (imageRequest: ImageRequest): Promise<FilePaths> => {
         fit: imageRequest.fit
       };
 
-      console.log(findThumb);
       const thumb = await thumbStore.find(findThumb);
-      console.log(thumb);
 
       const filePaths: FilePaths = {
         fullDir: fullDire,
