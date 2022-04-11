@@ -146,7 +146,6 @@ const imageFetch = async (
         .toBuffer(); // processing resizing
 
       const info = await sharp(resizedImage).metadata();
-      console.log(info);
 
       const thumbID = randomUUID();
       const thumbFileName = `${thumbID.split('-').join('')}_${fullImage.id

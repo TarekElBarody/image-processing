@@ -6,7 +6,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --watchAll",
+    "test": "react-scripts test --watchAll --verbose",
     "eject": "react-scripts eject",
     "deploy": "chmod +x bin/deploy.sh && bin/deploy.sh"
   },

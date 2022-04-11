@@ -3,6 +3,7 @@ import path from 'path';
 
 const prepTestImage = async (): Promise<boolean> => {
   const res = false;
+
   const testThumbName = 'for_test_jasmine_image_dont_deleted';
 
   const thumbDir = path.resolve('./images/thumb');

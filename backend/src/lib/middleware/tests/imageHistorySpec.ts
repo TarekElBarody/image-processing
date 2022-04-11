@@ -27,6 +27,10 @@ describe('Test Get Image Processing History API (imageHistorySpec)', async (): P
       });
   });
 
+  it('Should Generated Admin Token Success', async (): Promise<void> => {
+    expect(adminSignedToken.success).toBeTruthy();
+  });
+
   it('Should Get Image Processing History List', async (): Promise<void> => {
     // test API with the same parameters to generate the test thumb
 
