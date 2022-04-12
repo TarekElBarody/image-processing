@@ -31,8 +31,10 @@ export default class Login extends Component<Props, State> {
 
     validationSchema() {
         return Yup.object().shape({
-            email: Yup.string().required('This field is required!'),
-            password: Yup.string().required('This field is required!')
+            email: Yup.string().email('This is not a valid email.').required('This field is required!'),
+            password: Yup.string()
+                .test('len', 'The password must be between 6 and 40 characters.', (val: any) => val && val.toString().length >= 6 && val.toString().length <= 40)
+                .required('This field is required!')
         });
     }
 
@@ -96,7 +98,7 @@ export default class Login extends Component<Props, State> {
                         <div className="form-floating">
                             <div className="form-group mb-3">
                                 <label htmlFor="email">Email address</label>
-                                <Field name="email" type="text" className="form-control" autoComplete="email" />
+                                <Field id="email" name="email" type="text" className="form-control" autoComplete="email" label="email" />
                                 <ErrorMessage name="email" component="div" className="alert alert-danger" />
                                 <p className="text-muted">We'll never share your email with anyone else.</p>
                             </div>
@@ -104,13 +106,13 @@ export default class Login extends Component<Props, State> {
                         <div className="form-floating">
                             <div className="form-group mb-3">
                                 <label htmlFor="password">Password</label>
-                                <Field name="password" type="password" className="form-control" autoComplete="current-password" />
+                                <Field id="password" name="password" type="password" className="form-control" autoComplete="current-password" label="password" />
                                 <ErrorMessage name="password" component="div" className="alert alert-danger" />
                             </div>
                         </div>
 
                         <div className="form-group"></div>
-                        <button type="submit" className="w-100 btn btn-lg btn-primary">
+                        <button type="submit" className="w-100 btn btn-lg btn-primary" name="Login">
                             {loading && <span className="spinner-border spinner-border-sm"></span>}
                             <span>Login</span>
                         </button>

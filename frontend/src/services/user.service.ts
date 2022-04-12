@@ -3,8 +3,9 @@ import authHeader from './auth-header';
 import { API_URL } from '../common/config';
 
 class UserService {
-    checkToken() {
-        return axios.get(API_URL + 'users/check', { headers: authHeader().auth });
+    async checkToken() {
+        const response = await axios.get(API_URL + 'users/check', { headers: authHeader().auth });
+        return response;
     }
 }
 

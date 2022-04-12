@@ -22,6 +22,7 @@ export async function defaultAdmin(): Promise<void> {
     const store = new UserStore();
 
     const users = await store.index();
+    console.log(users);
     if (users.length === 0) {
       const user = await store.create(admin);
       console.log(

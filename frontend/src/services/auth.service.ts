@@ -8,6 +8,7 @@ export type UserInsert = {
     password: string;
     mobile: string;
 };
+
 class AuthService {
     login(email: string, password: string) {
         return axios

@@ -1,0 +1,215 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App 1`] = `
+<main
+  className="form-login"
+>
+  <h3
+    className="h3 mb-3 fw-normal"
+  >
+    Please sign in
+  </h3>
+  <hr />
+  <form
+    action="#"
+    onReset={[Function]}
+    onSubmit={[Function]}
+  >
+    <div
+      className="form-floating"
+    >
+      <div
+        className="form-group mb-3"
+      >
+        <label
+          htmlFor="email"
+        >
+          Email address
+        </label>
+        <input
+          autoComplete="email"
+          className="form-control"
+          id="email"
+          label="email"
+          name="email"
+          onBlur={[Function]}
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+        <p
+          className="text-muted"
+        >
+          We'll never share your email with anyone else.
+        </p>
+      </div>
+    </div>
+    <div
+      className="form-floating"
+    >
+      <div
+        className="form-group mb-3"
+      >
+        <label
+          htmlFor="password"
+        >
+          Password
+        </label>
+        <input
+          autoComplete="current-password"
+          className="form-control"
+          id="password"
+          label="password"
+          name="password"
+          onBlur={[Function]}
+          onChange={[Function]}
+          type="password"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      className="form-group"
+    />
+    <button
+      className="w-100 btn btn-lg btn-primary"
+      name="Login"
+      type="submit"
+    >
+      <span>
+        Login
+      </span>
+    </button>
+  </form>
+  <hr
+    className="mt"
+  />
+  <p
+    className="mt-1 mb-1 center"
+  >
+    If you dont have account .. 
+    <a
+      href="/register"
+    >
+      Create New
+    </a>
+  </p>
+  <p
+    className="mt-5 mb-1 center"
+  >
+    <a
+      href="https://github.com/TarekElBarody"
+    >
+      Tarek El-Barody
+    </a>
+     © 2022
+  </p>
+</main>
+`;
+
+exports[`App 2`] = `
+<main
+  className="form-login"
+>
+  <h3
+    className="h3 mb-3 fw-normal"
+  >
+    Please sign in
+  </h3>
+  <hr />
+  <form
+    action="#"
+    onReset={[Function]}
+    onSubmit={[Function]}
+  >
+    <div
+      className="form-floating"
+    >
+      <div
+        className="form-group mb-3"
+      >
+        <label
+          htmlFor="email"
+        >
+          Email address
+        </label>
+        <input
+          autoComplete="email"
+          className="form-control"
+          id="email"
+          label="email"
+          name="email"
+          onBlur={[Function]}
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+        <p
+          className="text-muted"
+        >
+          We'll never share your email with anyone else.
+        </p>
+      </div>
+    </div>
+    <div
+      className="form-floating"
+    >
+      <div
+        className="form-group mb-3"
+      >
+        <label
+          htmlFor="password"
+        >
+          Password
+        </label>
+        <input
+          autoComplete="current-password"
+          className="form-control"
+          id="password"
+          label="password"
+          name="password"
+          onBlur={[Function]}
+          onChange={[Function]}
+          type="password"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      className="form-group"
+    />
+    <button
+      className="w-100 btn btn-lg btn-primary"
+      name="Login"
+      type="submit"
+    >
+      <span>
+        Login
+      </span>
+    </button>
+  </form>
+  <hr
+    className="mt"
+  />
+  <p
+    className="mt-1 mb-1 center"
+  >
+    If you dont have account .. 
+    <a
+      href="/register"
+    >
+      Create New
+    </a>
+  </p>
+  <p
+    className="mt-5 mb-1 center"
+  >
+    <a
+      href="https://github.com/TarekElBarody"
+    >
+      Tarek El-Barody
+    </a>
+     © 2022
+  </p>
+</main>
+`;

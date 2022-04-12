@@ -15,7 +15,7 @@ const ImageListBox: React.FunctionComponent<Props> = (props) => {
             {props.imageList.map((value: ImageList, index: number) => {
                 const filename = `${value.url}?width=${props.size}&height=${props.size}&fit=${props.fit}&catching=${props.catch}`;
                 return (
-                    <Card key={value.id} style={{ width: 'auto', float: 'left', margin: '5px' }}>
+                    <Card key={value.id} style={{ maxWidth: props.size + 100 + 'px', width: 'auto', float: 'left', margin: '5px' }}>
                         <Card.Body>
                             <img src={filename} alt="" width={props.size} height={props.size} />
                         </Card.Body>

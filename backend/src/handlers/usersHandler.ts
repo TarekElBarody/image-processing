@@ -349,9 +349,8 @@ const checkAuthToken = async (
 ): Promise<void> => {
   if (req.session.user && req.session.isToken === true) {
     try {
-      // set userAccess logger
-      const tokenData = {
-        success: true,
+      const tokenData: TokenData = {
+        exp: Date.now() / 1000 + 60 * 60,
         data: {
           id: req.session.user.id as string,
           first_name: req.session.user.first_name,
@@ -359,7 +358,10 @@ const checkAuthToken = async (
           role: req.session.user.role
         }
       };
-      res.json(tokenData);
+      const signedToken = await createToken(tokenData);
+      // log the login to userAccess
+      res.json(signedToken);
+      // set userAccess logger
     } catch (error) {
       res.status(400).json({
         success: false,
