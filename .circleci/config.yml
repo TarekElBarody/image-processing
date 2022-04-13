@@ -83,10 +83,7 @@ jobs:
           docker_layer_caching: true
   build-frontend:
     docker:
-      - image: cimg/base:stable
-        auth:
-          username: $DOCKERHUB_USER
-          password: $DOCKERHUB_PASSWORD
+      - image: frontend-environment
     steps:     
       - checkout
       - run:
@@ -97,10 +94,7 @@ jobs:
           command: npm run frontend:build
   build-backend:
     docker:
-      - image: cimg/base:stable
-        auth:
-          username: $DOCKERHUB_USER
-          password: $DOCKERHUB_PASSWORD
+      - image: frontend-environment
     steps:
       - checkout
       - run:
@@ -111,10 +105,7 @@ jobs:
           command: npm run backend:build
   test-frontend:
     docker:
-      - image: cimg/base:stable
-        auth:
-          username: $DOCKERHUB_USER
-          password: $DOCKERHUB_PASSWORD
+      - image: frontend-environment
     steps:
       - checkout
       - run:
@@ -122,10 +113,7 @@ jobs:
           command: npm run frontend:test:ci
   test-backend:
     docker:
-      - image: cimg/base:stable
-        auth:
-          username: $DOCKERHUB_USER
-          password: $DOCKERHUB_PASSWORD
+      - image: frontend-environment
     steps:
       - checkout
       - run:
@@ -133,10 +121,7 @@ jobs:
           command: npm run backend:test
   deploy-frontend:
     docker:
-      - image: cimg/base:stable
-        auth:
-          username: $DOCKERHUB_USER
-          password: $DOCKERHUB_PASSWORD
+      - image: frontend-environment
     steps:
       - checkout
       - run:
@@ -144,10 +129,7 @@ jobs:
           command: npm run frontend:deploy
   deploy-backend:
     docker:
-      - image: cimg/base:stable
-        auth:
-          username: $DOCKERHUB_USER
-          password: $DOCKERHUB_PASSWORD
+      - image: frontend-environment
     steps:
       - checkout
       - run:
