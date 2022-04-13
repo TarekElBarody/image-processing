@@ -4,7 +4,7 @@ orbs:
   node: circleci/node@5.0.2
   aws-cli: circleci/aws-cli@3.0.0
 jobs:
-  Frontend-Environment:
+  FrontendEnvironment:
     docker:
       - image: "cimg/base:stable"
         auth:
@@ -22,7 +22,7 @@ jobs:
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           aws-region: AWS_REGION
           profile-name: AWS_PROFILE_NAME
-  Backend-Environment:
+  BackendEnvironment:
     docker:
       - image: "cimg/base:stable"
         auth:
@@ -45,9 +45,9 @@ jobs:
           working_directory: /
           command: |
             sudo apt-get -y -qq update
-            sudo apt-get install python3-pip python3-dev build-essential
+            sudo apt-get install python3-pip python3-dev Buildessential
             sudo pip3 install awsebcli
-  Build-Frontend:
+  BuildFrontend:
     steps:     
       - checkout
       - run:
@@ -56,7 +56,7 @@ jobs:
       - run:
           name: Front-End Build
           command: npm run frontend:build
-  Build-Backend:
+  BuildBackend:
     steps:
       - checkout
       - run:
@@ -88,9 +88,9 @@ jobs:
 workflows:
   version: 2.1
     jobs:
-      - FrontEnd-Build-Test:
-          - Frontend-Environment
-          - Build-Frontend
-      - Backend-Build-Test:
-          - Backend-Environment
-          - Build-Backend
+      - FrontendBuildTest:
+          - FrontendEnvironment
+          - BuildFrontend
+      - BackendBuildTest:
+          - BackendEnvironment
+          - BuildBackend
