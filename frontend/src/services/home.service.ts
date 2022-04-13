@@ -25,8 +25,16 @@ export type ImageList = {
     access: number;
 };
 
+const env = process.env.NODE_ENV as string | 'development';
+
 class HomeService {
     async getImagesCount(): Promise<ImagesCount> {
+        if (env === 'test') {
+            return {
+                fullCount: 2,
+                thumbCount: 12
+            };
+        }
         const response = await axios.get(API_URL + 'images/count', { headers: authHeader().auth });
         if (response.status === 401) {
             AuthService.logout();
@@ -49,6 +57,22 @@ class HomeService {
     }
 
     async getImagesHistory(): Promise<ImageHistory[]> {
+        if (env === 'test') {
+            return [
+                {
+                    num: 1,
+                    time: 'Mon Apr 11 2022 21:11:11',
+                    duration: '6ms',
+                    process: 'Output all thumbs for image name imageName.jpeg'
+                },
+                {
+                    num: 2,
+                    time: 'Mon Apr 11 2022 21:11:11',
+                    duration: '1778ms',
+                    process: 'Success processing image & Fetched as JSON for image imageName.jpeg  to format jpeg with width 600 & height 338'
+                }
+            ];
+        }
         const response = await axios.get(API_URL + 'images/history', { headers: authHeader().auth });
         if (response.status === 401) {
             AuthService.logout();
@@ -62,6 +86,28 @@ class HomeService {
     }
 
     async getImagesList(): Promise<ImageList[]> {
+        if (env === 'test') {
+            return [
+                {
+                    id: 'Image_ID_1',
+                    user_id: 'User_ID_1',
+                    url: 'https://localhost:8443/api/images/ImageName.jpeg',
+                    width: 1920,
+                    height: 1080,
+                    created: new Date(),
+                    access: 2
+                },
+                {
+                    id: 'Image_ID_2',
+                    user_id: 'User_ID_1',
+                    url: 'https://localhost:8443/api/images/ImageName.jpeg',
+                    width: 3840,
+                    height: 2160,
+                    created: new Date(),
+                    access: 2
+                }
+            ];
+        }
         const response = await axios.get(API_URL + 'images/list', { headers: authHeader().auth });
         if (response.status === 401) {
             AuthService.logout();

@@ -5,6 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/App.css';
 
 import AuthService from './services/auth.service';
+import UserService from './services/user.service';
+
 import IUser from './types/user.type';
 
 import Login from './pages/Login';
@@ -13,55 +15,78 @@ import Home from './pages/Home';
 import Profile from './pages/Profile';
 import Error404 from './pages/Error404';
 import Manager from './pages/Manager';
-import EventBus from './common/EventBus';
 
 type Props = {};
 
 type State = {
+    isLoggedIn: boolean;
+    userReady: boolean;
     currentUser: IUser | undefined;
-    token: string | '';
+    token: string;
 };
 
 class App extends Component<Props, State> {
     constructor(props: Props) {
         super(props);
-        this.logOut = this.logOut.bind(this);
 
         this.state = {
+            isLoggedIn: false,
+            userReady: false,
             currentUser: undefined,
             token: ''
         };
     }
 
-    componentDidMount() {
-        const user = AuthService.getCurrentUser();
-        const t = AuthService.getToken();
+    async UNSAFE_componentWillMount() {
+        const currentUser = AuthService.getCurrentUser();
+        const token = AuthService.getToken();
+        const logged = Boolean(AuthService.getIsLoggedIn());
+        this.setState({ isLoggedIn: logged, currentUser: currentUser, userReady: true, token: token });
 
-        if (user) {
+        UserService.checkToken().then((data) => {
             this.setState({
-                currentUser: user,
-                token: t
+                token: data.token
             });
-        }
-
-        EventBus.on('logout', this.logOut);
+            if (data.success === false) {
+                AuthService.logout();
+                this.setState({
+                    currentUser: {},
+                    token: ''
+                });
+                this.setState({ isLoggedIn: false });
+                window.location.href = '/login';
+            } else {
+                this.setState({ isLoggedIn: true, currentUser: currentUser, userReady: true, token: token });
+            }
+        });
     }
 
-    componentWillUnmount() {
-        EventBus.remove('logout', this.logOut);
-    }
+    async componentDidMount() {
+        const currentUser = AuthService.getCurrentUser();
+        const token = AuthService.getToken();
+        const logged = Boolean(AuthService.getIsLoggedIn());
+        this.setState({ isLoggedIn: logged, currentUser: currentUser, userReady: true, token: token });
 
-    logOut() {
-        AuthService.logout();
-        this.setState({
-            currentUser: undefined,
-            token: ''
+        UserService.checkToken().then((data) => {
+            this.setState({
+                token: data.token
+            });
+            if (data.success === false) {
+                AuthService.logout();
+                this.setState({
+                    currentUser: {},
+                    token: ''
+                });
+                this.setState({ isLoggedIn: false });
+                window.location.href = '/login';
+            } else {
+                this.setState({ isLoggedIn: true, currentUser: currentUser, userReady: true, token: token });
+            }
         });
     }
 
     render() {
         //const { currentUser } = this.state;
-
         return (
             <BrowserRouter>
                 <Routes>

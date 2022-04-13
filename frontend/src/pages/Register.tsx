@@ -86,7 +86,6 @@ export default class Register extends Component<Props, State> {
 
     handleBirthday(val: Date) {
         this.setState({ birthday: val });
-        console.log(val);
     }
 
     handleRegister(formValue: { first_name: string; last_name: string; birthday: Date; email: string; password: string; mobile: string }) {

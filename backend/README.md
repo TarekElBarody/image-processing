@@ -1,4 +1,4 @@
-# Image Processing API
+# Image Processing Backend
 
 This is a starter application that contains generic configurations, code formatter, error checking, code checking, and test modules to check the effectiveness of the application over 30 code checks. Using [`nodeJS`](https://nodejs.org/en/) with [`Express`](https://www.npmjs.com/package/expresss), [`TypeScript`](https://www.npmjs.com/package/typescript) , [`ESlint`](https://www.npmjs.com/package/eslint), [`Prettier`](https://www.npmjs.com/package/prettier) , [`Jasmine`](https://www.npmjs.com/package/jasmine) , [`supertest`](https://www.npmjs.com/package/supertest) , [`Sharp`](https://www.npmjs.com/package/sharp) , [`multer`](https://www.npmjs.com/package/multer) , [`compression`](https://www.npmjs.com/package/compression) , [`bcrypt`](https://www.npmjs.com/package/bcrypt) , [`body-parser`](https://www.npmjs.com/package/body-parser) , [`morgan`](https://www.npmjs.com/package/morgan) modules . 
 - The application supports SSL and is ready to work on both HTTP and HTTPS.
@@ -16,6 +16,7 @@ This is a starter application that contains generic configurations, code formatt
 
 # Table of contents:
 
+- [Database Setup](#Database-Setup)
 - [Environment Setup](#Environment-Setup)
 - [Running the server](#Running-the-server)
 	 - [Starting the server](#Starting-the-server)
@@ -52,14 +53,37 @@ This is a starter application that contains generic configurations, code formatt
 
 
 
+# Database Setup 
+- Using PostgreSQL 14
+- [Download & Install PostgreSQL](https://www.postgresql.org/download/)
+- Run psql script
+- Create User & database :
+
+```ssh
+CREATE USER store_user WITH PASSWORD '123456789';
+returns > CREATE ROLE
+
+CREATE DATABASE store_db;
+returns > CREATE DATABASE
+
+CREATE DATABASE store_db_test;
+returns > CREATE DATABASE
+
+GRANT ALL PRIVILEGES ON DATABASE store_db TO store_user;
+returns > GRANT
+
+GRANT ALL PRIVILEGES ON DATABASE store_db_test TO store_user;
+returns > GRANT
+
+```
 
 # Environment Setup 
 - Using nodeJS v16.13.2 and NPM 8.4.1
 - If you using lower or higher version of node please use [Node Package Manager](https://www.npmjs.com/)
 - Install all modules by using :
 ```ssh
-git clone https://github.com/TarekElBarody/Image-Processing-API.git
-cd  Image-Processing-API
+git clone https://github.com/TarekElBarody/image-processing.git
+cd  image-processing/backend
 npm install
 ```
 ## Running the server
@@ -68,14 +92,8 @@ npm install
 > we user ts-node & nodemon to running the code
 ```ssh
 npm start
-> image-processing-api@1.0.0 start
-> nodemon
+> image-processing@1.0.0 start
 
-[nodemon] 2.0.15
-[nodemon] to restart at any time, enter `rs`
-[nodemon] watching path(s): src/**/*
-[nodemon] watching extensions: ts
-[nodemon] starting `ts-node ./src/index.ts`
 HTTP server on port 3000 at http://localhost:3000/
 HTTPS server on port 4000 at https://localhost:4000/
 ```
@@ -84,7 +102,7 @@ HTTPS server on port 4000 at https://localhost:4000/
 ```ssh
 npm run lint
 
-> image-processing-api@1.0.0 lint
+> image-processing@1.0.0 lint
 > eslint "src/**/*.ts"
 
 ```
@@ -93,7 +111,7 @@ npm run lint
 ```ssh
 npm run prettier
 
-> image-processing-api@1.0.0 prettier
+> image-processing@1.0.0 prettier
 > prettier --config .prettierrc "src/**/*.ts" --write
 src/index.ts 55ms
 src/lib/app.ts 39ms
@@ -209,12 +227,6 @@ HTTPS server on port 4000 at https://localhost:4000/
 +    ✓ Should Endpoint is Responding 200 With Json
 +    ✓ Should API Return error 404 Not found for not controlled endpoint
 +   ✓ Should SSL Enabled for Endpoint
-
-  11 Test Web Route Access (webRouteSpec)
-+    ✓ Should Web Front Forwarded to Login Page
-+    ✓ Should SSL Web Front Forwarded to Login Page
-
-+Executed 30 of 30 specs SUCCESS in 2 secs.
 
 ```
 
@@ -546,15 +558,4 @@ HTTPS server on port 4000 at https://localhost:4000/
 	   "message":"Password Changed Successfully"
 	}
 
-# Access Web Control Panel
-> note: default username : admin && password : admin
-
-- Use any browser and access the url with the hostname and the port
-
-```
-http://localhost:3000/
-
-```
-## Screen Shots
-![Image-Processing-API](https://www.tameemat.com/Image-Processing-API.png) ![Image-Processing-API-2](https://www.tameemat.com/Image-Processing-API-2.png) ![Image-Processing-API-3](https://www.tameemat.com/Image-Processing-API-3.png)
 

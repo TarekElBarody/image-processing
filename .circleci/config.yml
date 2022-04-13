@@ -1,12 +1,15 @@
+
 version: 2.1
 orbs:
   node: circleci/node@5.0.2
   aws-cli: circleci/aws-cli@3.0.0
 jobs:
-  ENV:
+  Frontend-Environment:
     docker:
       - image: "cimg/base:stable"
-    resource_class: small
+        auth:
+          username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PASSWORD
     steps:
       - node/install
       - checkout
@@ -18,7 +21,25 @@ jobs:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           aws-region: AWS_REGION
-          profile-name: "eb-cli"        
+          profile-name: AWS_PROFILE_NAME
+  Backend-Environment:
+    docker:
+      - image: "cimg/base:stable"
+        auth:
+          username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - node/install
+      - checkout
+      - aws-cli/setup:
+          configure-default-region: true 
+          configure-profile-region: true 
+          disable-aws-pager: true 
+          override-installed: false 
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          aws-region: AWS_REGION
+          profile-name: AWS_PROFILE_NAME        
       - run:
           name: Installing deployment dependencies
           working_directory: /
@@ -26,82 +47,50 @@ jobs:
             sudo apt-get -y -qq update
             sudo apt-get install python3-pip python3-dev build-essential
             sudo pip3 install awsebcli
+  Build-Frontend:
+    steps:     
+      - checkout
       - run:
           name: Front-End Install
-          command: |
-            npm run frontend:install
-      - run:
-          name: Back-End Install
-          command: |
-            npm run backend:install
+          command: npm run frontend:install
       - run:
           name: Front-End Build
-          command: |
-            npm run frontend:build
+          command: npm run frontend:build
+  Build-Backend:
+    steps:
+      - checkout
+      - run:
+          name: Back-End Install
+          command: npm run backend:install
       - run:
           name: Back-End Build
-          command: |
-            npm run backend:build
+          command: npm run backend:build
+  Test-Frontend:
+    steps:
       - run:
           name: Front-End Test
-          command: |
-            npm run frontend:test
+          command: npm run frontend:test:ci
+  Test-Backend:
+    steps:
       - run:
           name: Back-End Test
-          command: |
-            npm run backend:test
-      - run:
-          name: Front-End Deploy
-          command: |
-            npm run frontend:deploy
-      - run:
-          name: Back-End Deploy
-          command: |
-            npm run backend:deploy
-  build:
-    docker:
-      - image: "cimg/base:stable"
-    resource_class: small
+          command: npm run backend:test
+  Deploy-Frontend:
     steps:
-      - node/install
-      - checkout
-      - aws-cli/setup:
-          configure-default-region: true 
-          configure-profile-region: true 
-          disable-aws-pager: true 
-          override-installed: false 
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          aws-region: AWS_REGION
-          profile-name: "eb-cli"        
-      - run:
-          name: Installing deployment dependencies
-          working_directory: /
-          command: |
-            sudo apt-get -y -qq update
-            sudo apt-get install python3-pip python3-dev build-essential
-            sudo pip3 install awsebcli
-      - run:
-          name: Front-End Install
-          command: |
-            npm run frontend:install
-      - run:
-          name: Back-End Install
-          command: |
-            npm run backend:install
-      - run:
-          name: Front-End Build
-          command: |
-            npm run frontend:build
-      - run:
-          name: Back-End Build
-          command: |
-            npm run backend:build
       - run:
           name: Front-End Deploy
-          command: |
-            npm run frontend:deploy
+          command: npm run frontend:deploy
+  Deploy-Backend:
+    steps:
       - run:
           name: Back-End Deploy
-          command: |
-            npm run backend:deploy
+          command: npm run backend:deploy
+workflows:
+  version: 2.1
+    jobs:
+      - FrontEnd-Build-Test:
+          - Frontend-Environment
+          - Build-Frontend
+      - Backend-Build-Test:
+          - Backend-Environment
+          - Build-Backend

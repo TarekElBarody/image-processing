@@ -81,7 +81,6 @@ export default function Login() {
                 Swal.showLoading();
             }
         });
-        alert(JSON.stringify(data));
     });
 
     return (

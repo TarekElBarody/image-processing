@@ -59,8 +59,8 @@ export default class Login extends Component<Props, State> {
 
         AuthService.login(email, password).then(
             () => {
-                Swal.close();
                 window.location.href = '/';
+                Swal.close();
             },
             (error) => {
                 const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();

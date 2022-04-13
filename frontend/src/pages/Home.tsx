@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import { Navigate } from 'react-router-dom';
 import AuthService from '../services/auth.service';
 import IUser from '../types/user.type';
 import Nav from '../components/navBar';
@@ -18,7 +17,7 @@ Swal.close();
 type Props = {};
 
 type State = {
-    redirect: string | null;
+    isLoggedIn: boolean;
     userReady: boolean;
     currentUser: IUser;
     token: string;
@@ -34,7 +33,7 @@ export default class Home extends Component<Props, State> {
         this.updateHistory = this.updateHistory.bind(this);
 
         this.state = {
-            redirect: null,
+            isLoggedIn: false,
             userReady: false,
             currentUser: {},
             token: '',
@@ -48,48 +47,56 @@ export default class Home extends Component<Props, State> {
         };
     }
 
-    componentDidMount() {
+    async UNSAFE_componentWillMount() {
         const currentUser = AuthService.getCurrentUser();
         const token = AuthService.getToken();
+        const logged = Boolean(AuthService.getIsLoggedIn());
+        this.setState({ isLoggedIn: logged, currentUser: currentUser, userReady: true, token: token });
 
-        if (!currentUser) this.setState({ redirect: '/login' });
-        this.setState({ currentUser: currentUser, userReady: true, token: token });
+        UserService.checkToken().then((data) => {
+            this.setState({
+                token: data.token
+            });
+            if (data.success === false) {
+                AuthService.logout();
+                this.setState({
+                    currentUser: {},
+                    token: ''
+                });
+                this.setState({ isLoggedIn: false });
+                window.location.href = '/login';
+            } else {
+                this.setState({ isLoggedIn: true, currentUser: currentUser, userReady: true, token: token });
+            }
+        });
+    }
+
+    async componentDidMount() {
+        const currentUser = AuthService.getCurrentUser();
+        const token = AuthService.getToken();
+        const logged = Boolean(AuthService.getIsLoggedIn());
+        this.setState({ isLoggedIn: logged, currentUser: currentUser, userReady: true, token: token });
+
+        UserService.checkToken().then((data) => {
+            this.setState({
+                token: data.token
+            });
+            if (data.success === false) {
+                AuthService.logout();
+                this.setState({
+                    currentUser: {},
+                    token: ''
+                });
+                this.setState({ isLoggedIn: false });
+                window.location.href = '/login';
+            } else {
+                this.setState({ isLoggedIn: true, currentUser: currentUser, userReady: true, token: token });
+            }
+        });
 
         this.updateCounts();
 
         this.updateHistory();
-
-        UserService.checkToken().then(
-            (response) => {
-                this.setState({
-                    token: response.data.token
-                });
-                if (response.status === 401) {
-                    AuthService.logout();
-                    this.setState({
-                        currentUser: {},
-                        token: '',
-                        redirect: '/login'
-                    });
-                }
-            },
-            (error) => {
-                this.setState({
-                    token: '',
-                    currentUser: {},
-                    redirect: 'login'
-                });
-
-                if (error.response && error.response.status === 401) {
-                    AuthService.logout();
-                    this.setState({
-                        currentUser: {},
-                        token: '',
-                        redirect: 'login'
-                    });
-                }
-            }
-        );
     }
 
     updateCounts() {
@@ -118,8 +125,8 @@ export default class Home extends Component<Props, State> {
     }
 
     render() {
-        if (this.state.redirect) {
-            return <Navigate to={this.state.redirect} />;
+        if (this.state.isLoggedIn === false) {
+            window.location.href = '/login';
         }
         //const elements = this.state.imageHistory;
         const thumbCount = this.state.imageCount.thumbCount;

@@ -197,7 +197,6 @@ describe('Test Image Processing API (imageFetchSpec)', async (): Promise<void> =
       .query({
         out: 'all'
       });
-    console.log(res.body);
 
     // check if the api respond and returned json data
     expect(res.status).toBe(200);

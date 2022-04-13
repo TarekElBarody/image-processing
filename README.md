@@ -1,23 +1,23 @@
-# Image Processing API Frontend & Backend With Deployment
+# Image Processing Frontend & Backend API With Deployment
 
-This is a starter application that contains generic configurations, code formatter, error checking, code checking, and test modules to check the effectiveness of the application over 30 code checks. Using [`nodeJS`](https://nodejs.org/en/) with [`Express`](https://www.npmjs.com/package/expresss), [`TypeScript`](https://www.npmjs.com/package/typescript) , [`ESlint`](https://www.npmjs.com/package/eslint), [`Prettier`](https://www.npmjs.com/package/prettier) , [`Jasmine`](https://www.npmjs.com/package/jasmine) , [`supertest`](https://www.npmjs.com/package/supertest) , [`Sharp`](https://www.npmjs.com/package/sharp) , [`multer`](https://www.npmjs.com/package/multer) , [`compression`](https://www.npmjs.com/package/compression) , [`bcrypt`](https://www.npmjs.com/package/bcrypt) , [`body-parser`](https://www.npmjs.com/package/body-parser) , [`morgan`](https://www.npmjs.com/package/morgan) modules . 
-- The application supports SSL and is ready to work on both HTTP and HTTPS.
-- Front-end application with a simple control panel with login feature, password authentication and encryption.
-- API calls to get stats and update the front end with the latest updates.
- - photo manager, for upload and resize photos , very simple and effective interface
-- generate the thumbnail on the fly and work with organized API endpoint 
-- changing the size of the thumbnails by selecting the appropriate size 
-- output as an image or as a JSON format with all the data that you can use in developing your own application
-- easy to deal with the stored image and clearing the cache.
-- dealing with images through API points very easy and fun
-- All programming steps have been explained inside each page
-- All necessary checks have been done as a reference that you can develop on
-- Strong typing is providing by Typescript for reduce errors
+This is a full web app with full deployment process using :
+- Backend Express & NodeJS & Postgres as an API Server [See Backend README](backend/README.md)
+- Frontend application with a simple control panel with login feature Using React 18 [See Frontend README](frontend/README.md).
+- AWS RDS PostgreSQL Database for store user data and images urls.
+- AWS Elastic Beanstalk for API Server
+- AWS S3 Bucket for storing React App Static Files
+- AWS S3 Bucket for Store Images uploaded to API
+- AWS CloudFront for demonstrate caching and speed delivery for React Static File from S3 Bucket
+- AWS CloudFront for S3 Bucket that hold the images for best catching techniques and prevent public access
+- AWS CloudFront for Elastic Beanstalk Server to Enable best SSL support and CORS configuration
+- CircleCI Platform to Create Pipeline and CI/CD deployment
+
 
 # Table of contents:
 
 - [Environment Setup](#Environment-Setup)
-- [Running the server](#Running-the-server)
+- [Deployment Diagram](#Environment-Setup)
+- [AWS Configuration](#Running-the-server)
 	 - [Starting the server](#Starting-the-server)
 	 - [Linting code error](#Linting-code-error)
 	 - [Formatting the code](#Formatting-the-code)
@@ -25,8 +25,10 @@ This is a starter application that contains generic configurations, code formatt
 	 - [build the project](#Build-the-project)
 	 - [Build and Serve the project](#Build-and-Serve-the-project)
 	 - [Run jasmine test](#Run-jasmine-test)
-- [App Directory](#App-Directory) 
-- [API Documentation](#API-Documentation)
+- [CircleCI Pipeline](#App-Directory) 
+	 - [Starting the server](#Starting-the-server)
+	 - [Linting code error](#Linting-code-error)
+- [RunBook](#API-Documentation)
 	- [Image Resizing API](#Image-Resizing-API)
 		- [Resizing Parameters](#Resizing-Parameters)	
 		- [Request Resize to Json](#Request-Resize-Out-Json)
@@ -54,13 +56,26 @@ This is a starter application that contains generic configurations, code formatt
 
 
 # Environment Setup 
-- Using nodeJS v16.13.2 and NPM 8.4.1
-- If you using lower or higher version of node please use [Node Package Manager](https://www.npmjs.com/)
-- Install all modules by using :
+> get the repo from the Github
+
 ```ssh
-git clone https://github.com/TarekElBarody/Image-Processing-API.git
-cd  Image-Processing-API
-npm install
+git clone https://github.com/TarekElBarody/image-processing.git
+cd  image-processing
+```
+
+> Follow the structured inside every stack folder we have
+- Backend API Server [See Backend README](backend/README.md)
+- Frontend application React 18 [See Frontend README](frontend/README.md)
+
+> you can use the root package.json to call install and build for both stack folder
+
+```ssh
+npm frontend:install
+npm frontend:build
+
+npm backend:install
+npm backend:build
+
 ```
 ## Running the server
 
@@ -68,7 +83,7 @@ npm install
 > we user ts-node & nodemon to running the code
 ```ssh
 npm start
-> image-processing-api@1.0.0 start
+> image-processing@1.0.0 start
 > nodemon
 
 [nodemon] 2.0.15
@@ -84,7 +99,7 @@ HTTPS server on port 4000 at https://localhost:4000/
 ```ssh
 npm run lint
 
-> image-processing-api@1.0.0 lint
+> image-processing@1.0.0 lint
 > eslint "src/**/*.ts"
 
 ```
@@ -93,7 +108,7 @@ npm run lint
 ```ssh
 npm run prettier
 
-> image-processing-api@1.0.0 prettier
+> image-processing@1.0.0 prettier
 > prettier --config .prettierrc "src/**/*.ts" --write
 src/index.ts 55ms
 src/lib/app.ts 39ms
@@ -556,5 +571,5 @@ http://localhost:3000/
 
 ```
 ## Screen Shots
-![Image-Processing-API](https://www.tameemat.com/Image-Processing-API.png) ![Image-Processing-API-2](https://www.tameemat.com/Image-Processing-API-2.png) ![Image-Processing-API-3](https://www.tameemat.com/Image-Processing-API-3.png)
+![image-processing](https://www.tameemat.com/image-processing.png) ![image-processing-2](https://www.tameemat.com/image-processing-2.png) ![image-processing-3](https://www.tameemat.com/image-processing-3.png)
 
