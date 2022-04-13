@@ -48,7 +48,7 @@ jobs:
           command: npm run frontend:build
       - run:
           name: Front-End test
-          command: npm run frontend:test:ci
+          command: npm run frontend:test
       - run:
           name: Front-End deploy
           command: npm run frontend:deploy
@@ -86,7 +86,7 @@ jobs:
           command: npm run backend:build
       - run:
           name: Back-End test
-          command: npm run backend:test:ci
+          command: npm run backend:test
       - run:
           name: Back-End deploy
           command: npm run backend:deploy

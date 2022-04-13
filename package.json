@@ -7,7 +7,7 @@
     "frontend:install": "cd frontend && npm install",
     "frontend:build": "cd frontend && npm run build",
     "frontend:deploy": "cd frontend && npm run deploy",
-    "frontend:test": "cd frontend && npm run test",
+    "frontend:test": "cd frontend && npm run test:ci",
     "backend:install": "cd backend && npm install",
     "backend:build": "cd backend && npm run build",
     "backend:deploy": "cd backend && npm run deploy",
