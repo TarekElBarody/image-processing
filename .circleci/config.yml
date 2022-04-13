@@ -36,8 +36,8 @@ jobs:
     docker:
       - image: cimg/base:stable
         auth:
-          username: DOCKERHUB_USER
-          password: DOCKERHUB_PASSWORD
+          username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PASSWORD
     steps:
       - node/install
       - checkout
@@ -58,8 +58,8 @@ jobs:
     docker:
       - image: cimg/base:stable
         auth:
-          username: DOCKERHUB_USER
-          password: DOCKERHUB_PASSWORD
+          username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PASSWORD
     steps:
       - node/install
       - checkout
@@ -87,8 +87,8 @@ jobs:
     docker:
       - image: cimg/base:stable
         auth:
-          username: DOCKERHUB_USER
-          password: DOCKERHUB_PASSWORD
+          username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PASSWORD
     steps:     
       - restore_cache:
           keys:
@@ -108,8 +108,8 @@ jobs:
     docker:
       - image: cimg/base:stable
         auth:
-          username: DOCKERHUB_USER
-          password: DOCKERHUB_PASSWORD
+          username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PASSWORD
     steps:
       - restore_cache:
           keys:
@@ -129,8 +129,8 @@ jobs:
     docker:
       - image: cimg/base:stable
         auth:
-          username: DOCKERHUB_USER
-          password: DOCKERHUB_PASSWORD
+          username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PASSWORD
     steps:
       - restore_cache:
           keys:
@@ -143,8 +143,8 @@ jobs:
     docker:
       - image: cimg/base:stable
         auth:
-          username: DOCKERHUB_USER
-          password: DOCKERHUB_PASSWORD
+          username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PASSWORD
     steps:
       - restore_cache:
           keys:
@@ -157,8 +157,8 @@ jobs:
     docker:
       - image: cimg/base:stable
         auth:
-          username: DOCKERHUB_USER
-          password: DOCKERHUB_PASSWORD
+          username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PASSWORD
     steps:
       - restore_cache:
           keys:
@@ -171,8 +171,8 @@ jobs:
     docker:
       - image: cimg/base:stable
         auth:
-          username: DOCKERHUB_USER
-          password: DOCKERHUB_PASSWORD
+          username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PASSWORD
     steps:
       - restore_cache:
           keys:
