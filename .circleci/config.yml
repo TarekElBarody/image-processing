@@ -53,7 +53,7 @@ jobs:
       - save_cache:
           key: v1-front-{{ .Environment.CIRCLE_SHA1 }}
           paths:
-            - .circleci/
+            - ~/.circleci/
   backend-environment:
     docker:
       - image: cimg/base:stable
@@ -82,7 +82,7 @@ jobs:
       - save_cache:
           key: v1-backend-{{ .Environment.CIRCLE_SHA1 }}
           paths:
-            - .circleci/
+            - ~/.circleci/
   build-frontend:
     docker:
       - image: cimg/base:stable
@@ -103,7 +103,7 @@ jobs:
       - save_cache:
           key: v1-front-build-{{ .Environment.CIRCLE_SHA1 }}
           paths:
-            - .circleci/
+            - ~/.circleci/
   build-backend:
     docker:
       - image: cimg/base:stable
@@ -124,7 +124,7 @@ jobs:
       - save_cache:
           key: v1-backend-build-{{ .Environment.CIRCLE_SHA1 }}
           paths:
-            - .circleci/
+            - ~/.circleci/
   test-frontend:
     docker:
       - image: cimg/base:stable
