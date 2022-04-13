@@ -89,8 +89,10 @@ workflows:
   version: 2.1
     jobs:
       - FrontendBuildTest:
-          - FrontendEnvironment
-          - BuildFrontend
+          context:
+              - FrontendEnvironment
+              - BuildFrontend
       - BackendBuildTest:
-          - BackendEnvironment
-          - BuildBackend
+          context:
+              - BackendEnvironment
+              - BuildBackend
