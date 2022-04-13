@@ -18,7 +18,7 @@ afterEach(() => {
 afterAll(() => {
     jest.clearAllMocks();
 });
-
+/*
 test('App', async () => {
     render(<App />);
 
@@ -33,7 +33,7 @@ test('App', async () => {
 
     // manually trigger the callback
 });
-
+*/
 test('Login', async () => {
     render(<Login history="" />);
 
