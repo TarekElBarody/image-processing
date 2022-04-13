@@ -6,10 +6,10 @@ orbs:
 jobs:
   FrontendEnvironment:
     docker:
-      - image: "cimg/base:stable"
-      auth:
+      - image: cimg/base:stable
+        auth:
           username: $DOCKERHUB_USER
-          password: $$DOCKERHUB_PASSWORD
+          password: $DOCKERHUB_PASSWORD
     steps:
       - node/install
       - checkout
@@ -24,8 +24,8 @@ jobs:
           profile-name: AWS_PROFILE_NAME
   BackendEnvironment:
     docker:
-      - image: "cimg/base:stable"
-      auth:
+      - image: cimg/base:stable
+        auth:
           username: $DOCKERHUB_USER
           password: $DOCKERHUB_PASSWORD
     steps:
