@@ -49,14 +49,16 @@ describe('Test Image Processing API (imageFetchSpec)', async (): Promise<void> =
     }
 
     url = res.body.image as string;
-    imageFileName = url.split('https://localhost:8443')[1];
+    console.log(url);
+    imageFileName = url.split('/').pop() as string;
+    console.log(imageFileName);
   });
   // start jasmine spay for console log
 
   it('Should generate thumb file for 1st time', async (): Promise<void> => {
     // test API with the same parameters to generate the test thumb
     const res = await requestHttps
-      .get(imageFileName)
+      .get('/api/images/' + imageFileName)
       .set('Authorization', `Bearer ${adminSignedToken.token}`)
       .trustLocalhost()
       .key(sslCert.key)
@@ -78,7 +80,7 @@ describe('Test Image Processing API (imageFetchSpec)', async (): Promise<void> =
 
   it('Should Process & Serve Cached thumb file', async (): Promise<void> => {
     const res = await requestHttps
-      .get(imageFileName)
+      .get('/api/images/' + imageFileName)
       .set('Authorization', `Bearer ${adminSignedToken.token}`)
       .trustLocalhost()
       .key(sslCert.key)
@@ -97,7 +99,7 @@ describe('Test Image Processing API (imageFetchSpec)', async (): Promise<void> =
   it('Should return Error wrong Format', async (): Promise<void> => {
     // test api with wrong parameter format to throw an error
     const res = await requestHttps
-      .get(imageFileName)
+      .get('/api/images/' + imageFileName)
       .set('Authorization', `Bearer ${adminSignedToken.token}`)
       .trustLocalhost()
       .key(sslCert.key)
@@ -173,7 +175,7 @@ describe('Test Image Processing API (imageFetchSpec)', async (): Promise<void> =
   it('Should return JSON output for image thumb', async (): Promise<void> => {
     // test api set out parameter to json
     const res = await requestHttps
-      .get(imageFileName)
+      .get('/api/images/' + imageFileName)
       .set('Authorization', `Bearer ${adminSignedToken.token}`)
       .trustLocalhost()
       .key(sslCert.key)
@@ -197,7 +199,7 @@ describe('Test Image Processing API (imageFetchSpec)', async (): Promise<void> =
   it('Should return JSON to all thumb for original image', async (): Promise<void> => {
     // test api set out parameter to all
     const res = await requestHttps
-      .get(imageFileName)
+      .get('/api/images/' + imageFileName)
       .set('Authorization', `Bearer ${adminSignedToken.token}`)
       .trustLocalhost()
       .key(sslCert.key)
