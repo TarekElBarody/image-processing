@@ -53,6 +53,7 @@ describe('Test Image Processing API (imageFetchSpec)', async (): Promise<void> =
     imageFileName = url.split('/').pop() as string;
     console.log(imageFileName);
   });
+
   // start jasmine spay for console log
 
   it('Should generate thumb file for 1st time', async (): Promise<void> => {
