@@ -22,7 +22,15 @@ describe('Test Image Processing API (imageFetchSpec)', async (): Promise<void> =
     adminSignedToken = await createTestUser();
 
     const testImageFile = 'for_test_jasmine_image_dont_deleted.jpg';
-    const testImagePath = path.resolve(`./tmp/${testImageFile}`);
+    const testImagePath = path.join(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      '..',
+      'tmp',
+      testImageFile
+    );
 
     let res: supertest.Response;
     if (process.env.SECURE == '1') {
