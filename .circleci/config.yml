@@ -3,6 +3,18 @@ version: 2.1
 orbs:
   node: circleci/node@5.0.2
   aws-cli: circleci/aws-cli@3.0.0
+
+workflows:
+    jobs:
+      - FrontendBuildTest:
+          context:
+              - FrontendEnvironment
+              - BuildFrontend
+      - BackendBuildTest:
+          context:
+              - BackendEnvironment
+              - BuildBackend
+              
 jobs:
   FrontendEnvironment:
     docker:
@@ -87,14 +99,3 @@ jobs:
           command: npm run backend:deploy
 
 
-workflows:
-  version: 2.1
-    jobs:
-      - FrontendBuildTest:
-          context:
-              - FrontendEnvironment
-              - BuildFrontend
-      - BackendBuildTest:
-          context:
-              - BackendEnvironment
-              - BuildBackend
