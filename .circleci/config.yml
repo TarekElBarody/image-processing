@@ -134,7 +134,6 @@ workflows:
             - build-front
       - deploy-front:
           requires:
-            - test-back
             - test-front
           filters:
             branches:
@@ -146,7 +145,6 @@ workflows:
       - deploy-back:
           requires:
             - test-back
-            - test-front
           filters:
             branches:
               only: main
