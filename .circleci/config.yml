@@ -84,7 +84,7 @@ workflows:
       - test-front:
           requires:
             - build-front 
-      - deploy:
+      - deploy-front:
           requires:
             - test-front
           filters:
