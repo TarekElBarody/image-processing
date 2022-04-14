@@ -1,4 +1,3 @@
-import fs from 'fs';
 import path from 'path';
 import supertest from 'supertest';
 import { httpApp, httpsApp, sslCert } from '../../../server';
@@ -7,6 +6,8 @@ import createTestUser from '../../functions/createTestUser';
 import dotenv from 'dotenv';
 
 dotenv.config();
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
+
 // prepare server for testing
 const requestHttp = supertest(httpApp);
 const requestHttps = supertest(httpsApp);
@@ -20,11 +21,6 @@ describe('Test Upload Image API (uploadImagesSpec)', async (): Promise<void> => 
 
   const testImageFile = 'for_test_jasmine_image_dont_deleted.jpg';
   const testImagePath = path.resolve(`./tmp/${testImageFile}`);
-  const testImageFulDirPath = path.resolve(`./images/full/${testImageFile}`);
-
-  beforeEach(async (): Promise<void> => {
-    if (fs.existsSync(testImageFulDirPath)) fs.unlinkSync(testImageFulDirPath);
-  });
 
   it('Should Upload Image Successfully', async (): Promise<void> => {
     // test API with the same parameters to generate the test thumb
@@ -44,7 +40,6 @@ describe('Test Upload Image API (uploadImagesSpec)', async (): Promise<void> => 
         .set('Authorization', `Bearer ${adminSignedToken.token}`)
         .attach('photo', testImagePath);
     }
-
     // check if the status 200 given back with image content type
     expect(res.status).toBe(200);
     expect(res.headers['content-type']).toEqual(

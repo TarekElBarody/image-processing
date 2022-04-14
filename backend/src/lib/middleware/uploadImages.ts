@@ -97,8 +97,10 @@ const uploadImages = async (
               `User ${req.session.user} File Uploaded successfully`
             );
           } else {
+            fs.unlinkSync(fileSrc); // deleted tmp file if copy to full success
+            fs.unlinkSync(fileDist); // deleted tmp file if copy to full success
             await imageStore.delete(image.id);
-            res.status(409).json({
+            res.status(407).json({
               status: 'error',
               message: `Cannot Upload the Image to The Bucket`
             });
@@ -109,6 +111,7 @@ const uploadImages = async (
             return;
           }
         } else {
+          fs.unlinkSync(fileSrc); // deleted tmp file if copy to full success
           // if copy fails to full dir send error 400
           res.status(409).json({
             status: 'error',
