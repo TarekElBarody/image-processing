@@ -4,7 +4,37 @@ orbs:
   aws-cli: circleci/aws-cli@3.0.0
 
 jobs:
-  build-env:
+  build-front:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - node/install
+      - checkout
+      - run:
+          name: Front-End Install
+          command: npm run frontend:install
+      - run:
+          name: Front-End build
+          command: npm run frontend:build
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+  
+  test-front: 
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - node/install
+      - checkout
+      - attach_workspace:
+          at: ~/project
+      - checkout
+      - run:
+          name: Front-End test
+          command: npm run frontend:test
+
+  deploy-front: 
     docker:
       - image: cimg/base:stable
     steps:
@@ -27,46 +57,6 @@ jobs:
             sudo apt-get install python3-pip python3-dev build-essential
             sudo pip3 install awsebcli
       - checkout
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - .
-
-  build-front: 
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - checkout
-      - run:
-          name: Front-End Install
-          command: npm run frontend:install
-      - run:
-          name: Front-End build
-          command: npm run frontend:build
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - .
-  test-front: 
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - checkout
-      - run:
-          name: Front-End test
-          command: npm run frontend:test
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - .
-  deploy-front: 
-    docker:
-      - image: cimg/base:stable
-    steps:
       - attach_workspace:
           at: ~/project
       - checkout
@@ -77,13 +67,10 @@ jobs:
 workflows:
   front-build-deploy:
     jobs:
-      - build-env
-      - build-front:
-          requires:
-            - build-env 
+      - build-front
       - test-front:
           requires:
-            - build-front 
+            - build-front
       - deploy-front:
           requires:
             - test-front
