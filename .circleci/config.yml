@@ -10,7 +10,6 @@ jobs:
     steps:
       - node/install
       - checkout
-      - checkout
       - setup_remote_docker:
           docker_layer_caching: true
       - run: docker build .
@@ -79,7 +78,7 @@ workflows:
   front-build-deploy:
     jobs:
       - build-docker
-      - build-front
+      - build-front:
           requires:
             - build-docker
       - test-front:
