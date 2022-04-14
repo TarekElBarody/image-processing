@@ -29,7 +29,6 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/project
-      - checkout
       - run:
           name: Front-End test
           command: npm run frontend:test
@@ -40,26 +39,9 @@ jobs:
     steps:
       - node/install
       - checkout
-      - aws-cli/setup:
-          configure-default-region: true 
-          configure-profile-region: true 
-          disable-aws-pager: true 
-          override-installed: false 
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          aws-region: AWS_REGION
-          profile-name: AWS_PROFILE_NAME        
-      - run:
-          name: Installing deployment dependencies
-          working_directory: /
-          command: |
-            sudo apt-get -y -qq update
-            sudo apt-get install python3-pip python3-dev build-essential
-            sudo pip3 install awsebcli
-      - checkout
+      - aws-cli/setup 
       - attach_workspace:
           at: ~/project
-      - checkout
       - run:
           name: Front-End deploy
           command: npm run frontend:deploy
@@ -89,7 +71,6 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/project
-      - checkout
       - run:
           name: Back-End test
           command: npm run backend:test
@@ -100,15 +81,7 @@ jobs:
     steps:
       - node/install
       - checkout
-      - aws-cli/setup:
-          configure-default-region: true 
-          configure-profile-region: true 
-          disable-aws-pager: true 
-          override-installed: false 
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          aws-region: AWS_REGION
-          profile-name: AWS_PROFILE_NAME        
+      - aws-cli/setup       
       - run:
           name: Installing deployment dependencies
           working_directory: /
