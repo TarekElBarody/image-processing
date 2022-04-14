@@ -4,6 +4,17 @@ orbs:
   aws-cli: circleci/aws-cli@3.0.0
 
 jobs:
+  build-docker:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - node/install
+      - checkout
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run: docker build .
+
   build-front:
     docker:
       - image: cimg/base:stable
@@ -65,9 +76,16 @@ jobs:
           command: npm run frontend:deploy
 
 workflows:
+  docker-build:
+    jobs:
+      - build-docker
+      
   front-build-deploy:
     jobs:
+      - build-docker
       - build-front
+          requires:
+            - docker-build
       - test-front:
           requires:
             - build-front

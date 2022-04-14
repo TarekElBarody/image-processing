@@ -76,39 +76,46 @@ const uploadImages = async (
           const imageRes = await imageStore.create(image);
 
           const fileContent = fs.readFileSync(fileDist);
-
-          const s3Res = await s3.addToBucket(
-            imageRes.bucket_key as string,
-            fileContent,
-            contentType
-          );
-
-          if (s3Res.success) {
-            fs.unlinkSync(fileSrc); // deleted tmp file if copy to full success
-            fs.unlinkSync(fileDist); // deleted tmp file if copy to full success
+          if (process.env.ENV === 'test') {
             res.status(200).json({
               status: 'success',
               message: `File Uploaded successfully`,
               image: `https://${process.env.AWS_CLOUD_FRONT_SERVER}/api/images/${disName}`
             });
-
-            userAccess.end(); // end the log time function event
-            userAccess.logT(
-              `User ${req.session.user} File Uploaded successfully`
-            );
           } else {
-            fs.unlinkSync(fileSrc); // deleted tmp file if copy to full success
-            fs.unlinkSync(fileDist); // deleted tmp file if copy to full success
-            await imageStore.delete(image.id);
-            res.status(407).json({
-              status: 'error',
-              message: `Cannot Upload the Image to The Bucket`
-            });
-            userAccess.end(); // end the log time function event
-            userAccess.logT(
-              `User ${req.session.user} Cannot Upload the Image to The Bucket`
+            const s3Res = await s3.addToBucket(
+              imageRes.bucket_key as string,
+              fileContent,
+              contentType
             );
-            return;
+
+            if (s3Res.success) {
+              fs.unlinkSync(fileSrc); // deleted tmp file if copy to full success
+              fs.unlinkSync(fileDist); // deleted tmp file if copy to full success
+              res.status(200).json({
+                status: 'success',
+                message: `File Uploaded successfully`,
+                image: `https://${process.env.AWS_CLOUD_FRONT_SERVER}/api/images/${disName}`
+              });
+
+              userAccess.end(); // end the log time function event
+              userAccess.logT(
+                `User ${req.session.user} File Uploaded successfully`
+              );
+            } else {
+              fs.unlinkSync(fileSrc); // deleted tmp file if copy to full success
+              fs.unlinkSync(fileDist); // deleted tmp file if copy to full success
+              await imageStore.delete(image.id);
+              res.status(407).json({
+                status: 'error',
+                message: `Cannot Upload the Image to The Bucket`
+              });
+              userAccess.end(); // end the log time function event
+              userAccess.logT(
+                `User ${req.session.user} Cannot Upload the Image to The Bucket`
+              );
+              return;
+            }
           }
         } else {
           fs.unlinkSync(fileSrc); // deleted tmp file if copy to full success

@@ -4,6 +4,8 @@ import ThumbStore from '../../models/thumbStore';
 import { Thumb } from '../../types/index';
 import dotenv from 'dotenv';
 import axios from 'axios';
+import path from 'path';
+import sharp from 'sharp';
 
 dotenv.config();
 const thumbDir =
@@ -24,22 +26,17 @@ const thumbFetch = async (
 
   const thumb = (await thumbStore.findByName(req.params.filename)) as Thumb;
   if (thumb) {
-    const url = `https://${process.env.AWS_CLOUD_FRONT_BUCKET}/${thumbDir}/${thumb.filename}`;
-    const response = await axios.get(url, { responseType: 'arraybuffer' });
+    if (process.env.ENV === 'test') {
+      const testImageFile = 'for_test_jasmine_image_dont_deleted.jpg';
+      const testImagePath = path.resolve(`./tmp/${testImageFile}`);
+      const buffer = await sharp(testImagePath).toBuffer();
 
-    if (
-      response.status === 200 ||
-      response.status === 204 ||
-      response.status === 302
-    ) {
-      const buffer = Buffer.from(response.data, 'utf-8');
-      // if output is img serve the thumb then log
       res.header('Cache-Control', 'max-age=31536000');
       // get the last modified date form file state
 
       res // set the last modified header to state file
         .setHeader('last-modified', (thumb.modified as Date).toDateString())
-        .contentType(response.headers['content-type'])
+        .contentType('image/jpeg')
         .status(302) // set the status cose 302 not modified
         .send(buffer); // send cached file to user
 
@@ -50,11 +47,38 @@ const thumbFetch = async (
       );
       return;
     } else {
-      res.status(400).json({ message: response.statusText });
-      // log the event in console & file log
-      imageLog.end();
-      imageLog.logT(response.statusText);
-      return;
+      const url = `https://${process.env.AWS_CLOUD_FRONT_BUCKET}/${thumbDir}/${thumb.filename}`;
+      const response = await axios.get(url, { responseType: 'arraybuffer' });
+
+      if (
+        response.status === 200 ||
+        response.status === 204 ||
+        response.status === 302
+      ) {
+        const buffer = Buffer.from(response.data, 'utf-8');
+        // if output is img serve the thumb then log
+        res.header('Cache-Control', 'max-age=31536000');
+        // get the last modified date form file state
+
+        res // set the last modified header to state file
+          .setHeader('last-modified', (thumb.modified as Date).toDateString())
+          .contentType(response.headers['content-type'])
+          .status(302) // set the status cose 302 not modified
+          .send(buffer); // send cached file to user
+
+        // log the event in console & file log
+        imageLog.end();
+        imageLog.logT(
+          `Cached thumb served to user for image ${thumb.filename} with format ${thumb.format} with width ${thumb.width} & height ${thumb.height}`
+        );
+        return;
+      } else {
+        res.status(400).json({ message: response.statusText });
+        // log the event in console & file log
+        imageLog.end();
+        imageLog.logT(response.statusText);
+        return;
+      }
     }
   }
 

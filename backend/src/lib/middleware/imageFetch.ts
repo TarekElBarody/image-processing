@@ -13,6 +13,7 @@ import { randomUUID } from 'crypto';
 import { dateNow } from '../functions/general';
 import dotenv from 'dotenv';
 import axios from 'axios';
+import path from 'path';
 
 dotenv.config();
 const thumbStore = new ThumbStore();
@@ -96,18 +97,21 @@ const imageFetch = async (
     }
 
     const fullImage = pathNames.fullImage as Image;
+    let buffer: Buffer | undefined;
 
-    const url = `https://${process.env.AWS_CLOUD_FRONT_BUCKET}/${pathNames.fullDir}/${fullImage.filename}`;
-    const response = await axios.get(url, { responseType: 'arraybuffer' });
+    if (process.env.ENV === 'test') {
+      const testImageFile = 'for_test_jasmine_image_dont_deleted.jpg';
+      const testImagePath = path.resolve(`./tmp/${testImageFile}`);
+      buffer = (await sharp(testImagePath).toBuffer()) as Buffer;
+    } else {
+      const url = `https://${process.env.AWS_CLOUD_FRONT_BUCKET}/${pathNames.fullDir}/${fullImage.filename}`;
+      const response = await axios.get(url, { responseType: 'arraybuffer' });
+      buffer = Buffer.from(response.data, 'utf-8') as Buffer;
+    }
 
     // check if the full image path exists to process image resize
-    if (
-      response.status === 200 ||
-      response.status === 204 ||
-      response.status === 302
-    ) {
+    if (buffer) {
       // get original file properties
-      const buffer = Buffer.from(response.data, 'utf-8');
 
       let toWidth = imageReq.width == 0 ? fullImage.width : imageReq.width; // set the original width as default
       let toHeight = imageReq.height == 0 ? fullImage.height : imageReq.height; // set the original height as default
@@ -154,13 +158,7 @@ const imageFetch = async (
         info.format
       }`;
       if (resizedImage) {
-        const s3Res = await s3.addToBucket(
-          `${pathNames.thumbDir}/${thumbFileName}`,
-          resizedImage,
-          'image/' + info.format
-        );
-
-        if (s3Res.success === true) {
+        if (process.env.ENV === 'test') {
           const insertThumb: Thumb = {
             id: thumbID,
             image_id: fullImage.id,
@@ -170,7 +168,7 @@ const imageFetch = async (
             format: info.format as string,
             fit: imageReq.fit,
             modified: dateNow(),
-            bucket_key: s3Res.data?.Key as string
+            bucket_key: thumbFileName as string
           };
 
           const newThumb = await thumbStore.create(insertThumb);
@@ -230,12 +228,89 @@ const imageFetch = async (
             return;
           }
         } else {
-          // if status not true then send json with the error message
-          res.status(400).json({ message: s3Res.err });
-          // log the event in console & file log
-          imageLog.end();
-          imageLog.logT(s3Res.err);
-          return;
+          const s3Res = await s3.addToBucket(
+            `${pathNames.thumbDir}/${thumbFileName}`,
+            resizedImage,
+            'image/' + info.format
+          );
+
+          if (s3Res.success === true) {
+            const insertThumb: Thumb = {
+              id: thumbID,
+              image_id: fullImage.id,
+              filename: thumbFileName,
+              width: toWidth,
+              height: toHeight,
+              format: info.format as string,
+              fit: imageReq.fit,
+              modified: dateNow(),
+              bucket_key: s3Res.data?.Key as string
+            };
+
+            const newThumb = await thumbStore.create(insertThumb);
+            // if true check the out put
+            if (newThumb.id) {
+              if (imageReq.out === 'json') {
+                const thumbJson = {
+                  status: true,
+                  id: fullImage.id,
+                  user_id: fullImage.user_id,
+                  width: fullImage.width,
+                  height: fullImage.height,
+                  created: fullImage.created,
+                  access: fullImage.access,
+                  url: `https://${
+                    process.env.AWS_CLOUD_FRONT_SERVER || ''
+                  }/api/images/${fullImage.filename}`,
+                  thumb: {
+                    id: newThumb.id,
+                    image_id: newThumb.image_id,
+                    user_id: fullImage.user_id,
+                    url: `https://${
+                      process.env.AWS_CLOUD_FRONT_SERVER || ''
+                    }/api/images/thumb/${thumbFileName}`,
+                    width: newThumb.width,
+                    height: newThumb.height,
+                    format: newThumb.format,
+                    fit: newThumb.fit
+                  }
+                };
+                // if json return generated json data from the class to the user
+                res.status(200).json(thumbJson);
+                imageLog.end();
+                imageLog.logT(
+                  `Success processing image & Fetched as JSON for image ${imageReq.filename}  to format ${info.format} with width ${info.width} & height ${info.height}`
+                );
+                return;
+              } else if (imageReq.out === 'img') {
+                // if img return send the resized file back to the user
+                res.header('Cache-Control', 'max-age=31536000');
+                res
+                  .contentType('image/' + info.format)
+                  .status(200)
+                  .send(resizedImage);
+                imageLog.end();
+                imageLog.log(
+                  `Success processing thumb for image ${imageReq.filename} to format ${info.format} with width ${info.width} & height ${info.height}`
+                );
+                return;
+              }
+            } else {
+              res.status(400).json({
+                message: 'Error Processing cannot process image resize'
+              });
+              imageLog.end();
+              imageLog.logT('Error Processing cannot process image resize');
+              return;
+            }
+          } else {
+            // if status not true then send json with the error message
+            res.status(400).json({ message: s3Res.err });
+            // log the event in console & file log
+            imageLog.end();
+            imageLog.logT(s3Res.err);
+            return;
+          }
         }
       } else {
         // if the status is undefined return an error message
