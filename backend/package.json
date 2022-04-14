@@ -17,7 +17,7 @@
     "test-migrate-up": "db-migrate up -e test",
     "test-migrate-reset": "db-migrate reset -e test",
     "test-migrate": "npm run test-migrate-reset && npm run test-migrate-up",
-    "test": "ENV=test npm run test-migrate && npm run build && ENV=test jasmine",
+    "test": "ENV=test npm run test-migrate && ENV=test jasmine",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir dist --onSuccess \"node dist/server.js\"",
     "start": "ENV=production node dist/server.js",
     "deploy": "chmod +x bin/deploy.sh && bin/deploy.sh"
