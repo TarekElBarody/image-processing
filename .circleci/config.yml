@@ -126,7 +126,7 @@ jobs:
 
   
 workflows:
-  front-build-deploy:
+  build-deploy:
     jobs:
       - build-front
       - test-front:
@@ -138,9 +138,6 @@ workflows:
           filters:
             branches:
               only: main
-
-  back-build-deploy:
-    jobs:
       - build-back
       - test-back:
           requires:
@@ -151,3 +148,4 @@ workflows:
           filters:
             branches:
               only: main
+      
