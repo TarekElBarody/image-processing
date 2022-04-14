@@ -76,16 +76,12 @@ jobs:
           command: npm run frontend:deploy
 
 workflows:
-  docker-build:
-    jobs:
-      - build-docker
-      
   front-build-deploy:
     jobs:
       - build-docker
       - build-front
           requires:
-            - docker-build
+            - build-docker
       - test-front:
           requires:
             - build-front
