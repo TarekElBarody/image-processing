@@ -58,10 +58,10 @@ jobs:
           command: npm run backend:cert
       - run:
           name: Front-End Install
-          command: npm run frontend:install
+          command: npm run backend:install
       - run:
           name: Front-End build
-          command: npm run frontend:build
+          command: npm run backend:build
       - persist_to_workspace:
           root: ~/project
           paths:
