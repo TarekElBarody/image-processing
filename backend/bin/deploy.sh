@@ -1,5 +1,5 @@
 #!/bin/bash
 eb use Imageprocessingbackend-env
 
-eb deploy
+eb deploy --profile aws-cli
 

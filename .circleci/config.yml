@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   node: circleci/node@5.0.2
-  aws-cli: circleci/aws-cli@1.2.1
+  aws-cli: circleci/aws-cli@3.0.0
 
 jobs:
   build-front:
@@ -41,12 +41,13 @@ jobs:
       - checkout
       - aws-cli/setup:
           configure-default-region: true 
-          configure-profile-region: true 
+          configure-profile-region: false 
           disable-aws-pager: true 
           override-installed: false 
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           aws-region: AWS_REGION
+          profile-name: aws-cli
       - attach_workspace:
           at: ~/project
       - run:
@@ -67,6 +68,7 @@ jobs:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           aws-region: AWS_REGION
+          profile-name: aws-cli
       - run:
           name: Back-End Copy SSL Keys
           command: npm run backend:cert
@@ -107,6 +109,7 @@ jobs:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           aws-region: AWS_REGION
+          profile-name: aws-cli
       - run:
           name: Installing deployment dependencies
           working_directory: /
