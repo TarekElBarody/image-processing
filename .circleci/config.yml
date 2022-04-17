@@ -44,9 +44,9 @@ jobs:
       - aws-cli/setup 
       - attach_workspace:
           at: ~/project
-      - run:
-          name: Front-End deploy
-          command: npm run frontend:deploy
+      - aws-s3/copy:
+          from: ./build
+          to: $FRONT_BUCKET
 
   build-back:
     docker:
@@ -54,13 +54,6 @@ jobs:
     steps:
       - node/install
       - checkout
-      - run: mkdir cert
-      - aws-s3/copy:
-          from: $EB_ENV_CERT
-          to: cert/server.cert
-      - aws-s3/copy:
-          from: $EB_ENV_KEY
-          to: cert/server.key
       - run:
           name: Back-End Install
           command: npm run backend:install
@@ -78,6 +71,14 @@ jobs:
     steps:
       - node/install
       - checkout
+      - aws-cli/setup
+      - run: mkdir cert
+      - aws-s3/copy:
+          from: $EB_ENV_CERT
+          to: cert/server.cert
+      - aws-s3/copy:
+          from: $EB_ENV_KEY
+          to: cert/server.key
       - attach_workspace:
           at: ~/project
       - run:
@@ -92,6 +93,13 @@ jobs:
       - checkout
       - aws-cli/setup
       - aws-eb/setup
+      - run: mkdir cert
+      - aws-s3/copy:
+          from: $EB_ENV_CERT
+          to: cert/server.cert
+      - aws-s3/copy:
+          from: $EB_ENV_KEY
+          to: cert/server.key
       - attach_workspace:
           at: ~/project
       - checkout
