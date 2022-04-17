@@ -56,6 +56,12 @@ jobs:
       - run:
           name: Back-End Copy SSL Keys
           command: npm run backend:cert
+      - run:
+          name: Front-End Install
+          command: npm run frontend:install
+      - run:
+          name: Front-End build
+          command: npm run frontend:build
       - persist_to_workspace:
           root: ~/project
           paths:
