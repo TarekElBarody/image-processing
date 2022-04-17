@@ -44,8 +44,10 @@ jobs:
       - aws-cli/setup 
       - attach_workspace:
           at: ~/project
-      - aws-s3/copy:
-          from: frontend/build
+      - aws-s3/sync:
+          arguments: |
+            --delete
+          from: frontend/build/*
           to: $FRONT_BUCKET
 
   build-back:
@@ -98,7 +100,7 @@ jobs:
       - checkout
       - run:
           command: |
-            eb deploy Imageprocessingbackend-env
+            eb deploy
             eb status
 
   
