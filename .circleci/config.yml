@@ -40,7 +40,6 @@ jobs:
     steps:
       - node/install
       - checkout
-      - aws-cli/setup 
       - attach_workspace:
           at: ~/project
       - aws-s3/sync:
@@ -79,7 +78,6 @@ jobs:
     steps:
       - node/install
       - checkout
-      - aws-cli/setup
       - attach_workspace:
           at: ~/project
       - run:
@@ -108,7 +106,7 @@ jobs:
           command: |
             cd backend
             eb use Imageprocessingbackend-env
-            eb deploy
+            eb deploy image-processing-backend
             eb status
 
   

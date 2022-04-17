@@ -7,6 +7,7 @@ environment-defaults:
     repository: null
 global:
   application_name: image-processing-backend
+  branch: main
   default_ec2_keyname: null
   default_platform: Node.js 16 running on 64bit Amazon Linux 2
   default_region: us-east-1
@@ -15,5 +16,6 @@ global:
   platform_name: null
   platform_version: null
   profile: null
-  sc: null
+  repository: image-processing-backend
+  sc: git
   workspace_type: Application
