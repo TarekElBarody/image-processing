@@ -115,13 +115,11 @@ workflows:
       - deploy-front:
           requires:
             - test-front
-            - test-back
           filters:
             branches:
               only: main
       - deploy-back:
           requires:
-            - test-front
             - test-back
           filters:
             branches:
