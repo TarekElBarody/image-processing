@@ -4,7 +4,7 @@ branch-defaults:
 environment-defaults:
   Imageprocessingbackend-env:
     branch: main
-    repository: null
+    repository: image-processing-backend
 global:
   application_name: image-processing-backend
   branch: main
