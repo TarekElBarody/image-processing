@@ -47,7 +47,7 @@ const thumbFetch = async (
       );
       return;
     } else {
-      const url = `https://${process.env.AWS_CLOUD_FRONT_BUCKET}/${thumbDir}/${thumb.filename}`;
+      const url = `https://${process.env.IMAGES_CLOUD}/${thumbDir}/${thumb.filename}`;
       const response = await axios.get(url, { responseType: 'arraybuffer' });
 
       if (

@@ -104,7 +104,7 @@ const imageFetch = async (
       const testImagePath = path.resolve(`./tmp/${testImageFile}`);
       buffer = (await sharp(testImagePath).toBuffer()) as Buffer;
     } else {
-      const url = `https://${process.env.AWS_CLOUD_FRONT_BUCKET}/${pathNames.fullDir}/${fullImage.filename}`;
+      const url = `https://${process.env.IMAGES_CLOUD}/${pathNames.fullDir}/${fullImage.filename}`;
       const response = await axios.get(url, { responseType: 'arraybuffer' });
       buffer = Buffer.from(response.data, 'utf-8') as Buffer;
     }
@@ -184,14 +184,14 @@ const imageFetch = async (
                 created: fullImage.created,
                 access: fullImage.access,
                 url: `https://${
-                  process.env.AWS_CLOUD_FRONT_SERVER || ''
+                  process.env.API_SERVER || ''
                 }/api/images/${fullImage.filename}`,
                 thumb: {
                   id: newThumb.id,
                   image_id: newThumb.image_id,
                   user_id: fullImage.user_id,
                   url: `https://${
-                    process.env.AWS_CLOUD_FRONT_SERVER || ''
+                    process.env.API_SERVER || ''
                   }/api/images/thumb/${thumbFileName}`,
                   width: newThumb.width,
                   height: newThumb.height,
@@ -260,14 +260,14 @@ const imageFetch = async (
                   created: fullImage.created,
                   access: fullImage.access,
                   url: `https://${
-                    process.env.AWS_CLOUD_FRONT_SERVER || ''
+                    process.env.API_SERVER || ''
                   }/api/images/${fullImage.filename}`,
                   thumb: {
                     id: newThumb.id,
                     image_id: newThumb.image_id,
                     user_id: fullImage.user_id,
                     url: `https://${
-                      process.env.AWS_CLOUD_FRONT_SERVER || ''
+                      process.env.API_SERVER || ''
                     }/api/images/thumb/${thumbFileName}`,
                     width: newThumb.width,
                     height: newThumb.height,

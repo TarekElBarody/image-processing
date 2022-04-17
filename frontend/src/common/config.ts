@@ -5,6 +5,6 @@ if (env === 'test') {
 } else if (env === 'development') {
     url = 'https://localhost:8443/api/';
 } else {
-    url = 'https://dw1lw2eo3fpol.cloudfront.net/api/';
+    url = 'https://eb.ocaponia.com/api/';
 }
 export const API_URL = url;

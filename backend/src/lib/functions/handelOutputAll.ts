@@ -29,7 +29,7 @@ const handelOutputAll = async (
       id: getThumbFiles[i].id,
       image_id: getThumbFiles[i].image_id,
       url: `https://${
-        process.env.AWS_CLOUD_FRONT_SERVER || ''
+        process.env.API_SERVER || ''
       }/api/images/thumb/${thumbFileName}`,
       width: getThumbFiles[i].width,
       height: getThumbFiles[i].height,
@@ -47,7 +47,7 @@ const handelOutputAll = async (
     height: pathNames.fullImage?.height,
     created: pathNames.fullImage?.created,
     access: pathNames.fullImage?.access,
-    url: `https://${process.env.AWS_CLOUD_FRONT_SERVER || ''}/api/images/${
+    url: `https://${process.env.API_SERVER || ''}/api/images/${
       pathNames.fullImage?.filename
     }`,
     thumbs: fetchThumbs

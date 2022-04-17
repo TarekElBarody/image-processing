@@ -25,7 +25,7 @@ const imageList = async (
 
     for (let i = 0; i < images.length; i++) {
       const url = `https://${
-        process.env.AWS_CLOUD_FRONT_SERVER || ''
+        process.env.API_SERVER || ''
       }/api/images/${images[i].filename}`;
 
       fetchImages.push({

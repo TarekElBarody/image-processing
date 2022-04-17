@@ -46,7 +46,7 @@ const handelCachedThumb = async (
       );
       return;
     } else {
-      const url = `https://${process.env.AWS_CLOUD_FRONT_BUCKET}/${pathNames.thumbDir}/${thumb.filename}`;
+      const url = `https://${process.env.IMAGES_CLOUD}/${pathNames.thumbDir}/${thumb.filename}`;
       const response = await axios.get(url, { responseType: 'arraybuffer' });
 
       if (
@@ -92,14 +92,14 @@ const handelCachedThumb = async (
       height: fullImage.height,
       created: fullImage.created,
       access: fullImage.access,
-      url: `https://${process.env.AWS_CLOUD_FRONT_SERVER || ''}/api/images/${
+      url: `https://${process.env.API_SERVER || ''}/api/images/${
         fullImage.filename
       }`,
       thumb: {
         id: thumb.id,
         image_id: thumb.image_id,
         url: `https://${
-          process.env.AWS_CLOUD_FRONT_SERVER || ''
+          process.env.API_SERVER || ''
         }/api/images/thumb/${thumbFileName}`,
         width: thumb.width,
         height: thumb.height,
