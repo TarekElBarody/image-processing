@@ -104,8 +104,10 @@ jobs:
           at: ~/project
       - checkout
       - run:
+          name: Back-End Deploy
           command: |
             cd backend
+            eb use Imageprocessingbackend-env
             eb deploy
             eb status
 
