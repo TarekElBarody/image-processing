@@ -43,3 +43,4 @@ frontend/.vscode/*
 !frontend/.prettierrc
 !backend/.eslintrc
 !backend/.prettierrc
+!backend/.elasticbeanstalk/*

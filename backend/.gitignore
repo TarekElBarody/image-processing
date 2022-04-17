@@ -25,3 +25,4 @@ cert/server.cert
 cert/server.key
 !.eslintrc
 !.prettierrc
+!.elasticbeanstalk/*
