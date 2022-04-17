@@ -19,9 +19,9 @@ logs/*
 .ebextensions
 .ebextensions/*
 .ebextensions/variables.config
-!.eslintrc
-!.prettierrc
 cert
 cert/*
 cert/server.cert
 cert/server.key
+!.eslintrc
+!.prettierrc

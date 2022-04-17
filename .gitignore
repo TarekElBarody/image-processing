@@ -1,3 +1,5 @@
+.vscode
+.vscode/*
 backend/env
 backend/env/*
 backend/.env
@@ -23,8 +25,7 @@ backend/cert
 backend/cert/*
 backend/cert/server.cert
 backend/cert/server.key
-!backend/.eslintrc
-!backend/.prettierrc
+
 
 frontend/env
 frontend/env/*
@@ -40,4 +41,5 @@ frontend/.vscode
 frontend/.vscode/*
 !frontend/.eslintrc
 !frontend/.prettierrc
-.vscode
+!backend/.eslintrc
+!backend/.prettierrc
