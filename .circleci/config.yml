@@ -47,7 +47,7 @@ jobs:
       - aws-s3/sync:
           arguments: |
             --delete
-          from: frontend/build/*
+          from: frontend/build/
           to: $FRONT_BUCKET
 
   build-back:
@@ -100,6 +100,7 @@ jobs:
       - checkout
       - run:
           command: |
+            cd backend
             eb deploy
             eb status
 
