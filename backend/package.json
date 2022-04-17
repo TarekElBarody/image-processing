@@ -20,7 +20,8 @@
     "test": "ENV=test npm run test-migrate && ENV=test jasmine",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir dist --onSuccess \"node dist/server.js\"",
     "start": "ENV=production node dist/server.js",
-    "deploy": "chmod +x bin/deploy.sh && bin/deploy.sh"
+    "deploy": "chmod +x bin/deploy.sh && bin/deploy.sh",
+    "cert": "chmod +x bin/cert.sh && bin/cert.sh"
   },
   "author": "Tarek El-Barody",
   "license": "MIT",

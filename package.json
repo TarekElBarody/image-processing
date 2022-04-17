@@ -11,7 +11,8 @@
     "backend:install": "cd backend && npm install",
     "backend:build": "cd backend && npm run build",
     "backend:deploy": "cd backend && npm run deploy",
-    "backend:test": "cd backend && npm run test"
+    "backend:test": "cd backend && npm run test",
+    "backend:cert": "cd backend && npm run cert"
 
   },
   "repository": {

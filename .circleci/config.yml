@@ -2,7 +2,6 @@ version: 2.1
 orbs:
   node: circleci/node@5.0.2
   aws-cli: circleci/aws-cli@3.0.0
-  aws-s3: circleci/aws-s3@3.0
 
 jobs:
   build-front:
@@ -40,13 +39,12 @@ jobs:
     steps:
       - node/install
       - checkout
+      - aws-cli/setup
       - attach_workspace:
           at: ~/project
-      - aws-s3/sync:
-          arguments: |
-            --delete
-          from: frontend/build/
-          to: $FRONT_BUCKET
+      - run:
+          name: Front-End Deploy
+          command: npm run frontend:deploy
 
   build-back:
     docker:
@@ -54,19 +52,10 @@ jobs:
     steps:
       - node/install
       - checkout
-      - run: mkdir backend/cert
-      - aws-s3/copy:
-          from: $EB_ENV_CERT
-          to: backend/cert/server.cert
-      - aws-s3/copy:
-          from: $EB_ENV_KEY
-          to: backend/cert/server.key
+      - aws-cli/setup
       - run:
-          name: Back-End Install
-          command: npm run backend:install
-      - run:
-          name: Back-End build
-          command: npm run backend:build
+          name: Back-End Copy SSL Keys
+          command: npm run backend:cert
       - persist_to_workspace:
           root: ~/project
           paths:
@@ -103,11 +92,7 @@ jobs:
       - checkout
       - run:
           name: Back-End Deploy
-          command: |
-            cd backend
-            eb use Imageprocessingbackend-env
-            eb deploy image-processing-backend
-            eb status
+          command: npm run backend:deploy
 
   
 workflows:
@@ -117,18 +102,20 @@ workflows:
       - test-front:
           requires:
             - build-front
-      - deploy-front:
-          requires:
-            - test-front
-          filters:
-            branches:
-              only: main
       - build-back
       - test-back:
           requires:
             - build-back
+      - deploy-front:
+          requires:
+            - test-front
+            - test-back
+          filters:
+            branches:
+              only: main
       - deploy-back:
           requires:
+            - test-front
             - test-back
           filters:
             branches:
