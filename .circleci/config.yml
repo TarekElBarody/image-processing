@@ -54,10 +54,8 @@ jobs:
     steps:
       - node/install
       - checkout
-      - aws-s3/setup
       - run: mkdir cert
       - aws-s3/copy:
-          arguments: '--dryrun'
           from: $EB_ENV_CERT
           to: cert/server.cert
       - aws-s3/copy:

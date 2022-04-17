@@ -23,3 +23,5 @@ logs/*
 !.prettierrc
 cert
 cert/*
+cert/server.cert
+cert/server.key

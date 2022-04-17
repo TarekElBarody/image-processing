@@ -21,6 +21,8 @@ backend/.ebextensions/*
 backend/.ebextensions/variables.config
 backend/cert
 backend/cert/*
+backend/cert/server.cert
+backend/cert/server.key
 !backend/.eslintrc
 !backend/.prettierrc
 
