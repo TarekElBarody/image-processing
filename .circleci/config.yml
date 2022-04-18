@@ -44,9 +44,9 @@ jobs:
           configure-profile-region: false 
           disable-aws-pager: true 
           override-installed: false 
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          aws-region: AWS_REGION
+          aws-access-key-id: AWS_CLI_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_CLI_SECRET_ACCESS_KEY
+          aws-region: AWS_CLI_REGION
           profile-name: aws-cli
       - attach_workspace:
           at: ~/project
@@ -65,9 +65,9 @@ jobs:
           configure-profile-region: true 
           disable-aws-pager: true 
           override-installed: false 
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          aws-region: AWS_REGION
+          aws-access-key-id: AWS_CLI_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_CLI_SECRET_ACCESS_KEY
+          aws-region: AWS_CLI_REGION
           profile-name: aws-cli
       - run:
           name: Back-End Copy SSL Keys
@@ -106,9 +106,9 @@ jobs:
           configure-profile-region: true 
           disable-aws-pager: true 
           override-installed: false 
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          aws-region: AWS_REGION
+          aws-access-key-id: AWS_CLI_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_CLI_SECRET_ACCESS_KEY
+          aws-region: AWS_CLI_REGION
           profile-name: aws-cli
       - run:
           name: Installing deployment dependencies
@@ -142,10 +142,10 @@ workflows:
           filters:
             branches:
               only: main
-      - deploy-back:
-          requires:
-            - test-back
-          filters:
-            branches:
-              only: main
+      # - deploy-back:
+      #     requires:
+      #       - test-back
+      #     filters:
+      #       branches:
+      #         only: main
       
