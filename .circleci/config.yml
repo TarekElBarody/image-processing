@@ -7,6 +7,7 @@ jobs:
   build-front:
     docker:
       - image: cimg/base:stable
+      resource_class: xlarge
     steps:
       - node/install
       - checkout
@@ -24,6 +25,7 @@ jobs:
   test-front: 
     docker:
       - image: cimg/base:stable
+      resource_class: xlarge
     steps:
       - node/install
       - checkout
@@ -36,6 +38,7 @@ jobs:
   deploy-front: 
     docker:
       - image: cimg/base:stable
+      resource_class: xlarge
     steps:
       - node/install
       - checkout
@@ -57,6 +60,7 @@ jobs:
   build-back:
     docker:
       - image: cimg/base:stable
+      resource_class: xlarge
     steps:
       - node/install
       - checkout
@@ -86,6 +90,7 @@ jobs:
   test-back: 
     docker:
       - image: cimg/base:stable
+      resource_class: xlarge
     steps:
       - node/install
       - checkout
@@ -98,6 +103,7 @@ jobs:
   deploy-back: 
     docker:
       - image: cimg/base:stable
+      resource_class: xlarge
     steps:
       - node/install
       - checkout
