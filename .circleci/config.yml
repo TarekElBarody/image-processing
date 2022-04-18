@@ -7,10 +7,6 @@ jobs:
   build-front:
     docker:
       - image: cimg/base:stable
-        auth:
-          username: $DOCKERHUB_USER
-          password: $DOCKERHUB_PASSWORD
-    resource_class: xlarge
     steps:
       - node/install
       - checkout
@@ -28,10 +24,6 @@ jobs:
   test-front: 
     docker:
       - image: cimg/base:stable
-        auth:
-          username: $DOCKERHUB_USER
-          password: $DOCKERHUB_PASSWORD
-    resource_class: xlarge
     steps:
       - node/install
       - checkout
@@ -44,10 +36,6 @@ jobs:
   deploy-front: 
     docker:
       - image: cimg/base:stable
-        auth:
-          username: $DOCKERHUB_USER
-          password: $DOCKERHUB_PASSWORD
-    resource_class: xlarge
     steps:
       - node/install
       - checkout
@@ -65,14 +53,30 @@ jobs:
       - run:
           name: Front-End Deploy
           command: npm run frontend:deploy
+  cloud-invalidation: 
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - node/install
+      - checkout
+      - aws-cli/setup:
+          configure-default-region: true 
+          configure-profile-region: false 
+          disable-aws-pager: true 
+          override-installed: false 
+          aws-access-key-id: AWS_CLI_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_CLI_SECRET_ACCESS_KEY
+          aws-region: AWS_CLI_REGION
+          profile-name: aws-cli
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Front-End Cloud Invalidation
+          command: npm run frontend:invalidation
 
   build-back:
     docker:
       - image: cimg/base:stable
-        auth:
-          username: $DOCKERHUB_USER
-          password: $DOCKERHUB_PASSWORD
-    resource_class: xlarge
     steps:
       - node/install
       - checkout
@@ -102,10 +106,6 @@ jobs:
   test-back: 
     docker:
       - image: cimg/base:stable
-        auth:
-          username: $DOCKERHUB_USER
-          password: $DOCKERHUB_PASSWORD
-    resource_class: xlarge
     steps:
       - node/install
       - checkout
@@ -118,10 +118,6 @@ jobs:
   deploy-back: 
     docker:
       - image: cimg/base:stable
-        auth:
-          username: $DOCKERHUB_USER
-          password: $DOCKERHUB_PASSWORD
-    resource_class: xlarge
     steps:
       - node/install
       - checkout
@@ -166,6 +162,9 @@ workflows:
           filters:
             branches:
               only: main
+      - cloud-invalidation:
+          requires:
+            - deploy-front
       # - deploy-back:
       #     requires:
       #       - test-back

@@ -9,7 +9,8 @@
     "test:ci": "cross-env NODE_ENV=test react-scripts test --silent  --env=jsdom --watchAll=false --ci --detectOpenHandles --forceExit",
     "test": "cross-env NODE_ENV=test react-scripts test --watchAll",
     "eject": "react-scripts eject",
-    "deploy": "chmod +x bin/deploy.sh && bin/deploy.sh"
+    "deploy": "chmod +x bin/deploy.sh && bin/deploy.sh",
+    "invalidation": "chmod +x bin/invalidation.sh && bin/invalidation.sh"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
