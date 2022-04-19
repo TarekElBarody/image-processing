@@ -165,10 +165,10 @@ workflows:
       - cloud-invalidation:
           requires:
             - deploy-front
-      # - deploy-back:
-      #     requires:
-      #       - test-back
-      #     filters:
-      #       branches:
-      #         only: main
+      - deploy-back:
+          requires:
+            - test-back
+          filters:
+            branches:
+              only: main
       
