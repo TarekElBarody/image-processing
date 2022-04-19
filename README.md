@@ -1,4 +1,6 @@
 # Image Processing Frontend & Backend API With Deployment
+[![CircleCI Build Status](https://circleci.com/gh/TarekElBarody/image-processing.svg?style=shield)](https://circleci.com/gh/TarekElBarody/image-processing)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/circleci/circleci-docs/master/LICENSE)
 
 This is a full web app with full deployment process using :
 - Backend Express & NodeJS & Postgres as an API Server [See Backend README](backend/README.md)
