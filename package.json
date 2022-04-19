@@ -13,7 +13,8 @@
     "backend:build": "cd backend && npm run build",
     "backend:test": "cd backend && npm run test",
     "backend:deploy": "cd backend && npm run deploy",
-    "backend:cert": "cd backend && npm run cert"
+    "backend:cert": "cd backend && npm run cert",
+    "gitlog": "git log --oneline --graph --decorate --all"
 
   },
   "repository": {

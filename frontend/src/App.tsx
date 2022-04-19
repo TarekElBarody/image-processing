@@ -82,6 +82,14 @@ class App extends Component<Props, State> {
             } else {
                 this.setState({ isLoggedIn: true, currentUser: currentUser, userReady: true, token: token });
             }
+        }).catch(()=>{
+            AuthService.logout();
+            this.setState({
+                currentUser: {},
+                token: ''
+            });
+            this.setState({ isLoggedIn: false });
+            window.location.href = '/login';
         });
     }
 
