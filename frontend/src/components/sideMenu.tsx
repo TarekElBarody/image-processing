@@ -10,6 +10,7 @@ import UploadImage from './uploadImage';
 
 type Props = {
     page: string;
+    handleImageClose: Function;
 };
 
 type State = {
@@ -24,6 +25,7 @@ class Side extends Component<Props, State> {
         this.logOut = this.logOut.bind(this);
         this.HandelUpload = this.HandelUpload.bind(this);
         this.handleClose = this.handleClose.bind(this);
+        this.handleImageClose = this.handleImageClose.bind(this);
 
         this.state = {
             currentUser: undefined,
@@ -68,7 +70,10 @@ class Side extends Component<Props, State> {
         this.setState({
             uploadShow: val
         });
+        this.handleImageClose();
     }
+
+    handleImageClose = () => this.props.handleImageClose();
 
     render() {
         //const { currentUser } = this.state;
@@ -98,7 +103,7 @@ class Side extends Component<Props, State> {
                                 </a>
                             </li>
                             <li className="nav-item">
-                                <button className="nav-link" id="upload-image" onClick={this.HandelUpload}>
+                                <button className="nav-link SpecButton" id="upload-image" onClick={this.HandelUpload}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-cloud-upload-fill" viewBox="0 0 16 16">
                                         <path
                                             fillRule="evenodd"
@@ -116,7 +121,7 @@ class Side extends Component<Props, State> {
                         </h4>
                         <ul className="nav flex-column mb-2">
                             <li className="nav-item">
-                                <a className="nav-link" id="add-new-user" href="#/">
+                                <a className="nav-link" id="add-new-user" href="/register-page">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-person-plus-fill" viewBox="0 0 16 16">
                                         <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
                                         <path fillRule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />

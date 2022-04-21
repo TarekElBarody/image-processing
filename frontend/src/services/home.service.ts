@@ -35,7 +35,8 @@ class HomeService {
                 thumbCount: 12
             };
         }
-        const response = await axios.get(API_URL + 'images/count', { headers: authHeader().auth });
+        try {
+            const response = await axios.get(API_URL + 'images/count', { headers: authHeader().auth });
         if (response.status === 401) {
             AuthService.logout();
             return {
@@ -54,6 +55,13 @@ class HomeService {
                 thumbCount: 0
             };
         }
+        } catch (error) {
+            return {
+                fullCount: 0,
+                thumbCount: 0
+            };
+        }
+        
     }
 
     async getImagesHistory(): Promise<ImageHistory[]> {
@@ -108,7 +116,8 @@ class HomeService {
                 }
             ];
         }
-        const response = await axios.get(API_URL + 'images/list', { headers: authHeader().auth });
+        try {
+            const response = await axios.get(API_URL + 'images/list', { headers: authHeader().auth });
         if (response.status === 401) {
             AuthService.logout();
             return [];
@@ -118,6 +127,10 @@ class HomeService {
         } else {
             return [];
         }
+        } catch (error) {
+            return [];
+        }
+        
     }
 }
 

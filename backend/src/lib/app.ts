@@ -9,7 +9,7 @@ import apiRoute from './routes/apiRoute';
 import { logMorgan } from './functions/loggerControl';
 import { checkLogSize } from './functions/general';
 import dotenv from 'dotenv';
-//import { delayHandler } from './middleware/verifyTokens';
+import { delayHandler } from './middleware/verifyTokens';
 
 dotenv.config();
 // Configure express server & default port
@@ -22,9 +22,9 @@ const env = process.env.ENV || 'dev';
 app.use(
   cors({
     origin: '*',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    preflightContinue: false,
-    optionsSuccessStatus: 204
+    allowedHeaders: '*', //X-Token as a custom header field
+    credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE'
   })
 );
 
@@ -116,7 +116,7 @@ if (env === 'production') {
 // enable session
 app.use(session(sess));
 
-//app.use(delayHandler);
+app.use(delayHandler);
 // mount mainRoute to server root
 app.use('/api', apiRoute);
 

@@ -1,13 +1,75 @@
-import React from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
+import axios from 'axios';
+import React, { useState } from 'react';
+import { Button, Form, Modal, ProgressBar } from 'react-bootstrap';
 
 export interface Props {
     show: boolean;
     handleClose: Function;
 }
 
+const useUploadForm = (url: string) => {
+    const [isSuccess, setIsSuccess] = useState(false);
+    const [progress, setProgress] = useState(0);
+
+    const uploadForm = async (formData: FormData) => {
+        //setIsLoading(true);
+        await axios.post(url, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            },
+            onUploadProgress: (progressEvent) => {
+                const progress = (progressEvent.loaded / progressEvent.total) * 50;
+                setProgress(progress);
+            },
+            onDownloadProgress: (progressEvent) => {
+                const progress = 50 + (progressEvent.loaded / progressEvent.total) * 50;
+                console.log(progress);
+                setProgress(progress);
+            }
+        });
+
+        await new Promise((resolve) => {
+            setTimeout(() => resolve('success'), 500);
+        });
+        setIsSuccess(true);
+        setProgress(0);
+    };
+
+    return { uploadForm, isSuccess, progress };
+};
+
 const UploadImage: React.FunctionComponent<Props> = (props) => {
+    const [isSuccessImage, setIsSuccessImage] = useState(false);
+    const [selectedFile, setSelectedFile] = React.useState<File>();
+    const { isSuccess, uploadForm, progress } = useUploadForm('http://localhost:5000/api/images/upload');
+
     const handleClose = () => props.handleClose(false);
+    const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        // Update the state
+        const fileList = e.target.files;
+
+        if (!fileList) return;
+
+        setSelectedFile(fileList[0]);
+    };
+
+    if (isSuccess && isSuccessImage === false) {
+        handleClose();
+        setIsSuccessImage(true);
+    }
+    const handleSubmit = async () => {
+        if (selectedFile) {
+            const formData = new FormData();
+            formData.append('photo', selectedFile, selectedFile.name);
+            console.log(selectedFile);
+
+            // Request made to the backend api
+            // Send formData object
+            return await uploadForm(formData);
+        }
+    };
+
     return (
         <Modal show={props.show} onHide={handleClose} backdrop="static">
             <Modal.Header closeButton>
@@ -16,21 +78,18 @@ const UploadImage: React.FunctionComponent<Props> = (props) => {
             <Modal.Body>
                 <Form>
                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                        <Form.Label>Email address</Form.Label>
-                        <Form.Control type="email" placeholder="name@example.com" autoFocus />
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                        <Form.Label>Example textarea</Form.Label>
-                        <Form.Control as="textarea" rows={3} />
+                        <Form.Label>Pick up your photo</Form.Label>
+                        <Form.Control type="file" size="lg" onChange={onFileChange} />
                     </Form.Group>
                 </Form>
+                <ProgressBar now={progress} label={`${progress}%`} />
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={handleClose}>
-                    Save Changes
+                <Button variant="primary" onClick={handleSubmit}>
+                    Upload
                 </Button>
             </Modal.Footer>
         </Modal>

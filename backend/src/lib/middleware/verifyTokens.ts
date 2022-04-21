@@ -50,7 +50,7 @@ export const delayHandler = async (
   _res: express.Response,
   next: express.NextFunction
 ): Promise<void> => {
-  await delay(0);
+  await delay(1000);
   next();
 
   return;

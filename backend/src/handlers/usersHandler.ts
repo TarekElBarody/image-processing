@@ -5,6 +5,8 @@ import { dateNow, getRsUser } from '../lib/functions/general';
 import { hashVerify, createToken } from '../lib/functions/hash';
 import dotenv from 'dotenv';
 import verifyTokens from '../lib/middleware/verifyTokens';
+import { verifyToken } from '../lib/functions/hash';
+
 import {
   User,
   UserUpdate,
@@ -347,33 +349,25 @@ const checkAuthToken = async (
   req: express.Request,
   res: express.Response
 ): Promise<void> => {
-  if (req.session.user && req.session.isToken === true) {
-    try {
-      const tokenData: TokenData = {
-        exp: Date.now() / 1000 + 60 * 60,
-        data: {
-          id: req.session.user.id as string,
-          first_name: req.session.user.first_name,
-          last_name: req.session.user.last_name,
-          role: req.session.user.role
-        }
-      };
+  try {
+    const authHeder = String(req.headers.authorization);
+    const token = authHeder.split(' ')[1];
+    const decoded = await verifyToken(token);
+    if (decoded.success) {
+      const tokenData = decoded.data as TokenData;
       const signedToken = await createToken(tokenData);
       // log the login to userAccess
       res.json(signedToken);
-      // set userAccess logger
-    } catch (error) {
-      res.status(400).json({
-        success: false,
-        message:
-          'Cannot process you request contact your administrator ' + error
-      });
+    } else {
+      res.status(200);
+      res.json(decoded);
     }
-  } else {
-    // if user not logged in return an error message
-    res.status(401).json({
+
+    // set userAccess logger
+  } catch (error) {
+    res.status(400).json({
       success: false,
-      message: 'you have to provide token first to can call this function'
+      message: 'Cannot process you request contact your administrator ' + error
     });
   }
 
@@ -383,7 +377,7 @@ const checkAuthToken = async (
 const usersHandler = (apiRoute: express.Router) => {
   apiRoute.get('/users', verifyTokens, index);
   apiRoute.post('/users/auth', generateAuthToken);
-  apiRoute.get('/users/check', verifyTokens, checkAuthToken);
+  apiRoute.get('/users/check', checkAuthToken);
   apiRoute.post('/users/add', create);
   apiRoute.get('/users/:id', verifyTokens, show);
   apiRoute.put('/users/:id', verifyTokens, update);

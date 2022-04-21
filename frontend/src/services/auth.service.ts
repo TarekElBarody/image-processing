@@ -25,33 +25,63 @@ class AuthService {
             localStorage.setItem('token', 'test_token_processed');
             localStorage.setItem('isLoggedIn', 'true');
             return {
-                success: true,
-                err: {},
+                status: 200,
                 data: {
-                    exp: 1649812609.493,
+                    success: true,
+                    err: {},
                     data: {
-                        id: 'd9006367-7cf0-4300-ad8f-e0b0d35e8a3a',
-                        first_name: 'Admin',
-                        last_name: 'Admin',
-                        role: 1
-                    }
-                },
-                token: 'test_token_processed'
+                        exp: 1649812609.493,
+                        data: {
+                            id: 'd9006367-7cf0-4300-ad8f-e0b0d35e8a3a',
+                            first_name: 'Admin',
+                            last_name: 'Admin',
+                            role: 1
+                        }
+                    },
+                    token: 'test_token_processed'
+                }
             };
         }
+        const config = {
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            },
+            proxy: {
+                host: 'localhost',
+                port: 5000
+            }
+        };
+
         return axios
-            .post(API_URL + 'users/auth', {
-                email,
-                password
-            })
+            .post(
+                API_URL + 'users/auth',
+                {
+                    email,
+                    password
+                },
+                config
+            )
             .then((response) => {
-                if (response.data.token && response.data.success) {
+                if (response.data.success) {
                     localStorage.setItem('user', JSON.stringify(response.data.data.data));
                     localStorage.setItem('token', response.data.token);
                     localStorage.setItem('isLoggedIn', 'true');
+                    return response;
                 }
-
-                return response.data;
+            })
+            .catch(() => {
+                localStorage.removeItem('user');
+                localStorage.removeItem('token');
+                localStorage.removeItem('isLoggedIn');
+                return {
+                    status: 400,
+                    data: {
+                        success: false,
+                        err: {},
+                        data: {},
+                        token: ''
+                    }
+                };
             });
     }
 
@@ -86,11 +116,11 @@ class AuthService {
         return '';
     }
 
-    getIsLoggedIn() {
+    getIsLoggedIn(): boolean {
         const isLoggedIn = localStorage.getItem('isLoggedIn');
-        if (isLoggedIn) return isLoggedIn;
+        if (isLoggedIn === 'true') return true;
 
-        return '';
+        return false;
     }
 }
 
