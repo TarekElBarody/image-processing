@@ -79,23 +79,31 @@ npm backend:build
 
 
 # AWS Certifcate Manager AND Cloudflare configuration
-> We user a sample domain name to work on it img-api.tk
+> We use a sample domain name to work on it like ( img-api.tk )
 
 > You can use your own domain follow the steps and change img-api.tk with your domain
 * Requesting a public certificate on AWS Certifcate Manager [see documentation](https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-public.html)
 * Add img-api.tk and *.img-api.tk to your request then copy the CNAME filed to your domain DNS Provider to proccess Validation 
-![AWS-Certificates-01](screenshots/AWS-Certificates-01.png)
-![AWS-Certificates-02](screenshots/AWS-Certificates-02.png)
-* We user Cloudflare as DNS Manager so we add those DNS Records on CloudFlare Domain DNS Page
+
+![AWS-Certificates-01](screenshots/AWS-Cerificates/AWS-Certificates-01.png)
+
+![AWS-Certificates-02](screenshots/AWS-Cerificates/AWS-Certificates-02.png)
+
+* We use Cloudflare as DNS Manager so we add those DNS Records on CloudFlare Domain DNS Page
 	- Create eb.img-api.tk CNAME Record and point it to your Elastic Beanstalk Host Name
 	- Create images.img-api.tk CNAME Record and point it to your Images CloudFront Concted to Images S3 Bucket
 	- Create www.img-api.tk CNAME Record and point it to your React App CloudFront Concted to React Static S3 Bucket
 	- Create A Record with @ or img-api.tk and point it to the AWS CloudFront Server IP Address 
-	![AWS-Certificates-03](screenshots/AWS-Certificates-03.png)
+
+	![AWS-Certificates-03](screenshots/AWS-Cerificates/AWS-Certificates-03.png)
+
 	- Create Cloudflare Client Certificates
-	![AWS-Certificates-04](screenshots/AWS-Certificates-04.png)
+
+	![AWS-Certificates-04](screenshots/AWS-Cerificates/AWS-Certificates-04.png)
+
 	- Enable Cloudflare SSL/TLS
-	![AWS-Certificates-05](screenshots/AWS-Certificates-05.png)
+
+	![AWS-Certificates-05](screenshots/AWS-Cerificates/AWS-Certificates-05.png)
 
 # AWS Configuration
 
@@ -108,8 +116,9 @@ npm backend:build
 * Follow Database Schema [see it on backend database documentation](backend/Database-Schema.md)
 * Our Final Setup Screenshot
 
-![image-processing-diagram](screenshots/rds-postgres.png)
-![image-processing-diagram](screenshots/rds-postgres2.png)
+![image-processing-diagram](screenshots/AWS-RDS/rds-postgres.png)
+
+![image-processing-diagram](screenshots/AWS-RDS/rds-postgres2.png)
 
 ## Elastic Beanstalk Environment
 > Follow the structured linkes to can setup and configure Elastic Beanstalk Server
@@ -120,15 +129,15 @@ npm backend:build
 
 	- Environment Home
 
-	![elastic-beanstalk-01](screenshots/elastic-beanstalk-01.png)
+	![elastic-beanstalk-01](screenshots/Elastic-Beanstalk/elastic-beanstalk-01.png)
 
 	- Environment Configuration
 
-	![elastic-beanstalk-02](screenshots/elastic-beanstalk-02.png)
+	![elastic-beanstalk-02](screenshots/Elastic-Beanstalk/elastic-beanstalk-02.png)
 
 	- Environment Load Balance Setup
 
-	![elastic-beanstalk-03](screenshots/elastic-beanstalk-03.png)
+	![elastic-beanstalk-03](screenshots/Elastic-Beanstalk/elastic-beanstalk-03.png)
 
 
 ## S3 Bucket For React Static Site
@@ -162,7 +171,7 @@ npm backend:build
         {
             "Effect": "Allow",
             "Principal": {
-                "AWS": "your IAM ARN"
+                "AWS": "arn:aws:iam::<Account ID>:user/<IAM Username>"
             },
             "Action": [
                 "s3:GetObject",
@@ -176,7 +185,7 @@ npm backend:build
             "Sid": "2",
             "Effect": "Allow",
             "Principal": {
-                "AWS": "CLOUD FRONT ARN"
+                "AWS": "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity <OAI ID>"
             },
             "Action": "s3:GetObject",
             "Resource": "arn:aws:s3:::image-processing-front-store/*"
@@ -188,8 +197,10 @@ npm backend:build
 
 
 * Our Final Setup Screenshot
-![S3-Bucket-React-App-01](screenshots/S3-Bucket-React-App-02.png)
-![S3-Bucket-React-App-01](screenshots/S3-Bucket-React-App-01.png)
+
+![S3-Bucket-React-App-01](screenshots/AWS-S3/S3-Bucket-React-App-02.png)
+
+![S3-Bucket-React-App-01](screenshots/AWS-S3/S3-Bucket-React-App-01.png)
 
 ## S3 Bucket For Store Images
 > Follow the structured linkes to can setup and configure AWS S3 Bucket
@@ -223,7 +234,7 @@ npm backend:build
 		{
 			"Effect": "Allow",
 			"Principal": {
-				"AWS": "your IAM ARN"
+				"AWS": "arn:aws:iam::<Account ID>:user/<IAM Username>"
 			},
 			"Action": [
 				"s3:GetObject",
@@ -237,7 +248,7 @@ npm backend:build
 			"Sid": "1",
 			"Effect": "Allow",
 			"Principal": {
-				"AWS": "CLOUD FRONT ARN"
+				"AWS": "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity <OAI ID>"
 			},
 			"Action": "s3:GetObject",
 			"Resource": "arn:aws:s3:::image-processing-thumb-store/*"
@@ -252,5 +263,237 @@ npm backend:build
 ```
 
 * Our Final Setup Screenshot
-![S3-Bucket-Images-01](screenshots/S3-Bucket-Images-01.png)
-![S3-Bucket-Images-02](screenshots/S3-Bucket-React-App-01.png)
+
+![S3-Bucket-Images-01](screenshots/AWS-S3/S3-Bucket-Images-01.png)
+
+![S3-Bucket-Images-02](screenshots/AWS-S3/S3-Bucket-React-App-01.png)
+
+
+## CloudFront for S3 Static Bucket
+> Follow the structured linkes to can setup and configure AWS S3 Bucket
+
+> Turn Off public access on S3 Bbucket to extra secure we use AWS CloudFront to serve the static files
+* Restricting access to Amazon S3 content by using an origin access identity (OAI) [see documentation](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html)
+* Deploy a React-based single-page application to Amazon S3 and CloudFront [see documentation](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/deploy-a-react-based-single-page-application-to-amazon-s3-and-cloudfront.html)
+* Creating a distribution and point img-api.tk and www.img-api.tk to the CNAME section and select domain certificate from ssl  [see documentation](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/distribution-web-creating-console.html) 
+* S3 origin with CloudFront[see documentation](https://docs.aws.amazon.com/whitepapers/latest/secure-content-delivery-amazon-cloudfront/s3-origin-with-cloudfront.html) 
+
+* Our Final Setup Screenshot
+
+![AWS-Cloud-Front-Static-01](screenshots/AWS-CloudFront/AWS-Cloud-Front-Static-01.png)
+
+![AWS-Cloud-Front-Static-02](screenshots/AWS-CloudFront/AWS-Cloud-Front-Static-02.png)
+
+![AWS-Cloud-Front-Static-03](screenshots/AWS-CloudFront/AWS-Cloud-Front-Static-03.png)
+
+![AWS-Cloud-Front-Static-04](screenshots/AWS-CloudFront/AWS-Cloud-Front-Static-04.png)
+
+
+
+## CloudFront for S3 Images Store
+> Follow the structured linkes to can setup and configure AWS S3 Bucket
+
+> Turn Off public access on S3 Bbucket to extra secure we use AWS CloudFront to serve the static files
+* Restricting access to Amazon S3 content by using an origin access identity (OAI) [see documentation](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html)
+* Deploy a React-based single-page application to Amazon S3 and CloudFront [see documentation](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/deploy-a-react-based-single-page-application-to-amazon-s3-and-cloudfront.html)
+* Creating a distribution and point images.img-api.tk to the CNAME section and select domain certificate from ssl [see documentation](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/distribution-web-creating-console.html) 
+* S3 origin with CloudFront [see documentation](https://docs.aws.amazon.com/whitepapers/latest/secure-content-delivery-amazon-cloudfront/s3-origin-with-cloudfront.html) 
+
+* Our Final Setup Screenshot
+> Same configuration but on origin we use images.img-api.tk
+
+![AWS-Cloud-Front-Static-05](screenshots/AWS-CloudFront/AWS-Cloud-Front-Static-05.png)
+
+
+# CircleCI Pipeline
+
+## Configure CircleCI Pipeline
+> The configuration inside .circleci/config.yml
+```
+version: 2.1
+orbs: # services included from cercleci to be instaled on the docker image
+  node: circleci/node@5.0.2
+  aws-cli: circleci/aws-cli@3.0.0
+
+jobs: # deployment jobs
+
+  build-front: # job to build and install dependencies for frontend react app
+    docker: # configure the docker image
+      - image: cimg/base:stable
+    steps: # steps inside the job to run sequantly
+      - node/install # installing nodejs
+      - checkout # checkout the workspace to ensure we are running on our repo
+      - run: # to tell cercleci to run the following command
+          name: Front-End Install
+          command: npm run frontend:install
+      - run:
+          name: Front-End build
+          command: npm run frontend:build
+      - persist_to_workspace: # save the working directory to work space to use it in the next job
+          root: ~/project # save the workspace at project folder root
+          paths: # include pathes to save
+            - .
+  
+  test-front: # job to test the front end react app
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - node/install
+      - checkout
+      - attach_workspace: # attaching the saved workspace from last job
+          at: ~/project # from the root project we defined before
+      - run:
+          name: Front-End test
+          command: npm run frontend:test
+
+  deploy-front: # job to deploy front end react app
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - node/install
+      - checkout
+      - aws-cli/setup: # install aws-cli and configure it
+          configure-default-region: true 
+          configure-profile-region: false 
+          disable-aws-pager: true 
+          override-installed: false 
+          aws-access-key-id: AWS_CLI_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_CLI_SECRET_ACCESS_KEY
+          aws-region: AWS_CLI_REGION
+          profile-name: aws-cli
+      - attach_workspace: # attaching the saved workspace from last job
+          at: ~/project
+      - run:
+          name: Front-End Deploy
+          command: npm run frontend:deploy
+
+  cloud-invalidation: # job to create invalidation for cached files from aws cloudfront after deployment
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - node/install
+      - checkout
+      - aws-cli/setup: # install aws-cli and configure it
+          configure-default-region: true 
+          configure-profile-region: false 
+          disable-aws-pager: true 
+          override-installed: false 
+          aws-access-key-id: AWS_CLI_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_CLI_SECRET_ACCESS_KEY
+          aws-region: AWS_CLI_REGION
+          profile-name: aws-cli
+      - attach_workspace: # attaching the saved workspace from last job
+          at: ~/project
+      - run:
+          name: Front-End Cloud Invalidation
+          command: npm run frontend:invalidation
+
+  build-back: # job to build and install dependencies for backend API server
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - node/install
+      - checkout
+      - aws-cli/setup: # install aws-cli and configure it
+          configure-default-region: true 
+          configure-profile-region: true 
+          disable-aws-pager: true 
+          override-installed: false 
+          aws-access-key-id: AWS_CLI_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_CLI_SECRET_ACCESS_KEY
+          aws-region: AWS_CLI_REGION
+          profile-name: aws-cli
+      - run:
+          name: Back-End Copy SSL Keys
+          command: npm run backend:cert
+      - run:
+          name: Front-End Install
+          command: npm run backend:install
+      - run:
+          name: Front-End build
+          command: npm run backend:build
+      - persist_to_workspace: # save the working directory to work space to use it in the next job
+          root: ~/project
+          paths:
+            - .
+  
+  test-back: # job to test backend API server
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - node/install
+      - checkout
+      - attach_workspace: # attaching the saved workspace from last job
+          at: ~/project
+      - run:
+          name: Back-End test
+          command: npm run backend:test
+
+  deploy-back: # job to deploy backend API server to AWS Elastic Beanstalk
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - node/install
+      - checkout
+      - aws-cli/setup: # install aws-cli and configure it
+          configure-default-region: true 
+          configure-profile-region: true 
+          disable-aws-pager: true 
+          override-installed: false 
+          aws-access-key-id: AWS_CLI_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_CLI_SECRET_ACCESS_KEY
+          aws-region: AWS_CLI_REGION
+          profile-name: aws-cli
+      - run: # install aws eb-cli 
+          name: Installing deployment dependencies
+          working_directory: /
+          command: |
+            sudo apt-get -y -qq update
+            sudo apt-get install python3-pip python3-dev build-essential
+            sudo pip3 install awsebcli
+      - attach_workspace: # attaching the saved workspace from last job
+          at: ~/project
+      - checkout
+      - run:
+          name: Back-End Deploy
+          command: npm run backend:deploy
+
+  
+workflows: # workflow to run jobs on conditional steps
+  build-test-deploy: # work flow to build then test then deploy process
+    jobs:
+    # fornt end steps
+      - build-front # call build job to build forntend dependencies
+      - test-front: # call test job for testing frontend
+          requires: # cannot process this job its require the build step
+            - build-front      
+      - deploy-front: # call deploy job to deploy frontend to aws s3 bucket
+          requires: # cannot process this job its require the test step
+            - test-front
+          filters: # filter this job to run only on master bruch on our repo after pushing
+            branches:
+              only: main
+      - cloud-invalidation: # call invalidation job to clear cached files from aws cloudfront after deployment
+          requires: # cannot process this job its require the deploy step
+            - deploy-front
+
+    # backend steps
+      - build-back # call build job to build backend dependencies
+      - test-back: # call test job for testing backend
+          requires: # cannot process this job its require the build step
+            - build-back
+      - deploy-back: # call deploy job to deploy backend  to aws elastic beanstalk
+          requires: # cannot process this job its require the test step
+            - test-back
+          filters: # filter this job to run only on master bruch on our repo after pushing
+            branches:
+              only: main
+      
+
+```
+
+### Screenshot for deploment
+> Every stack run in parrell and depends on other jobs
+
+> first build if succeded run test if succeded run deploy and eatch of front and end run in parrell 
+
