@@ -183,9 +183,9 @@ const imageFetch = async (
                 height: fullImage.height,
                 created: fullImage.created,
                 access: fullImage.access,
-                url: `https://${
-                  process.env.API_SERVER || ''
-                }/api/images/${fullImage.filename}`,
+                url: `https://${process.env.API_SERVER || ''}/api/images/${
+                  fullImage.filename
+                }`,
                 thumb: {
                   id: newThumb.id,
                   image_id: newThumb.image_id,
@@ -259,9 +259,9 @@ const imageFetch = async (
                   height: fullImage.height,
                   created: fullImage.created,
                   access: fullImage.access,
-                  url: `https://${
-                    process.env.API_SERVER || ''
-                  }/api/images/${fullImage.filename}`,
+                  url: `https://${process.env.API_SERVER || ''}/api/images/${
+                    fullImage.filename
+                  }`,
                   thumb: {
                     id: newThumb.id,
                     image_id: newThumb.image_id,

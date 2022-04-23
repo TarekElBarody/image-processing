@@ -24,9 +24,9 @@ const imageList = async (
     const fetchImages: ImageRes[] = [];
 
     for (let i = 0; i < images.length; i++) {
-      const url = `https://${
-        process.env.API_SERVER || ''
-      }/api/images/${images[i].filename}`;
+      const url = `https://${process.env.API_SERVER || ''}/api/images/${
+        images[i].filename
+      }`;
 
       fetchImages.push({
         // return the json data for each file in the thumb directory

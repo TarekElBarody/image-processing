@@ -14,7 +14,7 @@ import { delayHandler } from './middleware/verifyTokens';
 dotenv.config();
 // Configure express server & default port
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 const sslPort = process.env.SSL_PORT || 4000;
 const env = process.env.ENV || 'dev';
 
