@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Button, Form, Modal, ProgressBar } from 'react-bootstrap';
+import { API_URL } from '../common/config';
 
 export interface Props {
     show: boolean;
@@ -42,7 +43,7 @@ const useUploadForm = (url: string) => {
 const UploadImage: React.FunctionComponent<Props> = (props) => {
     const [isSuccessImage, setIsSuccessImage] = useState(false);
     const [selectedFile, setSelectedFile] = React.useState<File>();
-    const { isSuccess, uploadForm, progress } = useUploadForm('http://localhost:5000/api/images/upload');
+    const { isSuccess, uploadForm, progress } = useUploadForm(API_URL + 'images/upload');
 
     const handleClose = () => props.handleClose(false);
     const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
