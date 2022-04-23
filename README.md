@@ -31,7 +31,8 @@ This is a full web app with full deployment process using :
 - [CircleCI Pipeline](#App-Directory) 
 	 - [Configure CircleCI Pipeline](#Configure-CircleCI-Pipeline)
 	 - [Setup Enviroment Virables on CircleCI Settings](#Setup-Enviroment-Virables-on-CircleCI-Settings)
-- [Access Web Control Panel](#Access-Web-Control-Panel)
+	 - [Screenshot for deploment](#Screenshot-for-deploment)
+- [Access Web And Test](#Access-Web-And-Test)
 
 
 
@@ -309,6 +310,8 @@ npm backend:build
 
 ## Configure CircleCI Pipeline
 > The configuration inside .circleci/config.yml
+
+> Note that deploy not run only for main branch
 ```
 version: 2.1
 orbs: # services included from cercleci to be instaled on the docker image
@@ -492,8 +495,29 @@ workflows: # workflow to run jobs on conditional steps
 
 ```
 
-### Screenshot for deploment
+## Setup Enviroment Virables on CircleCI Settings
+![CircleCI-Pipeline-10](screenshots//CercleCI/pipeline-10.png)
+
+## Screenshot for deploment
 > Every stack run in parrell and depends on other jobs
 
 > first build if succeded run test if succeded run deploy and eatch of front and end run in parrell 
 
+![CircleCI-Pipeline-01](screenshots//CercleCI/pipeline-01.png)
+![CircleCI-Pipeline-02](screenshots//CercleCI/pipeline-02.png)
+![CircleCI-Pipeline-03](screenshots//CercleCI/pipeline-03.png)
+![CircleCI-Pipeline-04](screenshots//CercleCI/pipeline-04.png)
+![CircleCI-Pipeline-05](screenshots//CercleCI/pipeline-05.png)
+![CircleCI-Pipeline-06](screenshots//CercleCI/pipeline-06.png)
+![CircleCI-Pipeline-07](screenshots//CercleCI/pipeline-07.png)
+![CircleCI-Pipeline-08](screenshots//CercleCI/pipeline-08.png)
+![CircleCI-Pipeline-09](screenshots//CercleCI/pipeline-09.png)
+
+
+
+
+# Access Web And Test
+> We use the domain name img-api.tk as a test of doplayment
+* You can access the react app frontend from here [https://www.img-api.tk/](https://www.img-api.tk/)
+* Server back end checkout from here [https://eb.img-api.tk/api](https://eb.img-api.tk/api)
+> the default email is `admin@admin.com` and password is `123456789`

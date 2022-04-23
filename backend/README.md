@@ -60,19 +60,19 @@ This is a starter application that contains generic configurations, code formatt
 - Create User & database :
 
 ```ssh
-CREATE USER store_user WITH PASSWORD '123456789';
+CREATE USER postgres WITH PASSWORD '123456789';
 returns > CREATE ROLE
 
-CREATE DATABASE store_db;
+CREATE DATABASE imageprocess;
 returns > CREATE DATABASE
 
-CREATE DATABASE store_db_test;
+CREATE DATABASE imageprocess_test;
 returns > CREATE DATABASE
 
-GRANT ALL PRIVILEGES ON DATABASE store_db TO store_user;
+GRANT ALL PRIVILEGES ON DATABASE imageprocess TO postgres;
 returns > GRANT
 
-GRANT ALL PRIVILEGES ON DATABASE store_db_test TO store_user;
+GRANT ALL PRIVILEGES ON DATABASE imageprocess_test TO postgres;
 returns > GRANT
 
 ```
@@ -93,6 +93,71 @@ npm run migrate
 ```ssh
 npm install
 ```
+- Change example.env to .env and fill necessary data
+  * ENV                 	# dev or test or production
+  * PORT           			# http port like 8080 or 3000
+  * SSL_PORT          		# https port like 8443 or 4000
+  * POSTGRES_HOST       	# postgreSQL database hostname for local use localhost
+  * POSTGRES_DB         	# dev database name "imageprocess"
+  * POSTGRES_DB_TEST    	# test database name "imageprocess_test"
+  * POSTGRES_USER       	# postgreSQL user name postgres
+  * POSTGRES_PASSWORD   	# postgreSQL user password like "123456789"
+  * SECURE              	# 0 or 1 to force using https secure connection and not allow regular http
+  * MORGAN              	# 0 or 1 to enable Morgan to show http access log in console
+  * PEPPER              	# a secret word masked with users password to maximize security
+  * ROUND               	# bcrypt hashing rounds default 10
+  * TOKEN_SECRET        	# JWT token secret for generate tokens
+  * SESSION_SLAT        	# session security salt to secure the saved sessions by express
+  * NO_CONSOLE          	# 0 or 1 to enable or disable console log for logger function
+  * AWS_ACCESS_KEY_ID		# Your AWS Access Key ID
+  * AWS_SECRET_ACCESS_KEY	# Your AWS Secret Access Key
+  * AWS_BUCKET_NAME			# The Images bucket name who store images on it
+  * API_SERVER				# API Server like eb.img-api.tk or localhost:8443 for devolopment
+  * IMAGES_CLOUD			# the subdomain or cloudfront host who serve images from the images bucket
+
+- you can use this default values for .env
+
+```
+ENV=dev
+
+PORT=5000
+SSL_PORT=8443
+
+POSTGRES_HOST=localhost
+POSTGRES_DB=imageprocess
+POSTGRES_DB_TEST=imageprocess_test
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=123456789
+
+SECURE=1
+
+PEPPER=
+ROUND=10
+
+TOKEN_SECRET=
+
+SESSION_SLAT=
+
+NO_CONSOLE=0
+
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_BUCKET_NAME=
+
+API_SERVER=localhost:8443
+IMAGES_CLOUD=images.img-api.tk
+
+
+LOG_SIZE=10
+```
+
+- Run db migration's
+```ssh
+npm run migrate
+```
+> YOU CAN USE AFTER THAT `npm run migrate`
+
+
 ## Running the server
 
 #### Starting the server
