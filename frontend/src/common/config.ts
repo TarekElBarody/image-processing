@@ -5,6 +5,6 @@ if (env === 'test') {
 } else if (env === 'development') {
     url = 'https://localhost:8443/api/';
 } else {
-    url = 'https://eb.ocaponia.com/api/';
+    url = 'https://eb.img-api.tk/api/';
 }
 export const API_URL = url;

@@ -5,60 +5,38 @@
 This is a full web app with full deployment process using :
 - Backend Express & NodeJS & Postgres as an API Server [See Backend README](backend/README.md)
 - Frontend application with a simple control panel with login feature Using React 18 [See Frontend README](frontend/README.md).
-- AWS RDS PostgreSQL Database for store user data and images urls.
+- AWS RDS PostgreSQL Database for store user data and images URLs.
 - AWS Elastic Beanstalk for API Server
 - AWS S3 Bucket for storing React App Static Files
 - AWS S3 Bucket for Store Images uploaded to API
 - AWS CloudFront for demonstrate caching and speed delivery for React Static File from S3 Bucket
 - AWS CloudFront for S3 Bucket that hold the images for best catching techniques and prevent public access
-- AWS CloudFront for Elastic Beanstalk Server to Enable best SSL support and CORS configuration
 - CircleCI Platform to Create Pipeline and CI/CD deployment
+- Cloudflare for domain name point to servers
 
 
 # Table of contents:
 
 - [Environment Setup](#Environment-Setup)
-- [Deployment Diagram](#Environment-Setup)
+- [App Directory](#App-Directory)
+- [Deployment Diagram](#Deployment-Diagram)
+- [AWS Certifcate Manager AND Cloudflare configuration](#AWS-Certifcate-Manager-AND-Cloudflare-configuration)
 - [AWS Configuration](#Running-the-server)
-	 - [Starting the server](#Starting-the-server)
-	 - [Linting code error](#Linting-code-error)
-	 - [Formatting the code](#Formatting-the-code)
-	 - [Clean destination folder](#Clean-dist-folder)
-	 - [build the project](#Build-the-project)
-	 - [Build and Serve the project](#Build-and-Serve-the-project)
-	 - [Run jasmine test](#Run-jasmine-test)
+	 - [RDS PostgreSQL Server](#RDS-PostgreSQL-Server)
+	 - [Elastic Beanstalk Environment](#Elastic-Beanstalk-Environment)
+	 - [S3 Bucket For React Static Site](#S3-Bucket-For-React-Static-Site)
+	 - [S3 Bucket For Store Images](#S3-Bucket-For-Store-Images)
+	 - [CloudFront for S3 Static Bucket](#CloudFront-for-S3-Static-Bucket)
+	 - [CloudFront for S3 Images Store](#CloudFront-for-S3-Images-Store)
 - [CircleCI Pipeline](#App-Directory) 
-	 - [Starting the server](#Starting-the-server)
-	 - [Linting code error](#Linting-code-error)
-- [RunBook](#API-Documentation)
-	- [Image Resizing API](#Image-Resizing-API)
-		- [Resizing Parameters](#Resizing-Parameters)	
-		- [Request Resize to Json](#Request-Resize-Out-Json)
-		- [Request Resize to Image](#Request-Resize-Out-Image)
-		- [Request All thumbs](#Request-All-thumbs-for-image)
-	- [Clear Thumb Cache](#Clear-Thumb-Cache)
-	  	- [Request Clear Thumbs](#Request-Clear-Thumbs)
-	- [Get a list of images folder](#Get-a-list-of-images-folder)
-		- [List Parameters](#List-Parameters)
-		- [Request List](#Request-List)
-	- [Get a list of images folder](#Get-a-list-of-images-folder)
-		- [Request List](#Request-List)
-	- [Get Images & Thumb Count](#Get-Images-&-Thumb-Count)
-		- [Request Count](#Request-Images-&-Thumb-Count) 
-	- [Get Image Process History](#Get-Image-Process-History)
-		- [Request History](#Request-Image-Process-History) 
-	- [Upload Image to Full Folder](#Upload-Image-to-Full-Folder)
-		- [Request Upload](#Request-Upload) 
-	- [Reset User Password](#Reset-User-Password)
-		- [Request Reset](#Request-Reset) 
+	 - [Configure CircleCI Pipeline](#Configure-CircleCI-Pipeline)
+	 - [Setup Enviroment Virables on CircleCI Settings](#Setup-Enviroment-Virables-on-CircleCI-Settings)
 - [Access Web Control Panel](#Access-Web-Control-Panel)
-- [Screen Shots](#ScreenShots)
-
 
 
 
 # Environment Setup 
-> get the repo from the Github
+> get the repo from the GitHub
 
 ```ssh
 git clone https://github.com/TarekElBarody/image-processing.git
@@ -79,499 +57,200 @@ npm backend:install
 npm backend:build
 
 ```
-## Running the server
-
-#### Starting the server
-> we user ts-node & nodemon to running the code
-```ssh
-npm start
-> image-processing@1.0.0 start
-> nodemon
-
-[nodemon] 2.0.15
-[nodemon] to restart at any time, enter `rs`
-[nodemon] watching path(s): src/**/*
-[nodemon] watching extensions: ts
-[nodemon] starting `ts-node ./src/index.ts`
-HTTP server on port 3000 at http://localhost:3000/
-HTTPS server on port 4000 at https://localhost:4000/
-```
-
-#### Linting code error
-```ssh
-npm run lint
-
-> image-processing@1.0.0 lint
-> eslint "src/**/*.ts"
-
-```
-
-#### Formatting the code
-```ssh
-npm run prettier
-
-> image-processing@1.0.0 prettier
-> prettier --config .prettierrc "src/**/*.ts" --write
-src/index.ts 55ms
-src/lib/app.ts 39ms
-src/lib/functions/cryptUser.ts 82ms
-src/lib/functions/getPathName.ts 26ms
-src/lib/functions/handelCachedThumb.ts 23ms
-src/lib/functions/handelImageNoSize.ts 26ms
-src/lib/functions/handelImageResize.ts 42ms
-src/lib/functions/handelOutputAll.ts 21ms
-src/lib/functions/imageResize.ts 73ms
-src/lib/functions/logger.ts 34ms
-src/lib/functions/safeString.ts 9ms
-src/lib/helper/jasmine tokens.ts 3ms
-src/lib/middleware/imageDeleteSelected.ts 56ms
-src/lib/middleware/imageDeleteThumbs.ts 30ms
-src/lib/middleware/imageFetch.ts 46ms
-src/lib/middleware/imageHistory.ts 20ms
-src/lib/middleware/imageList.ts 23ms
-src/lib/middleware/imageListCount.ts 18ms
-src/lib/middleware/postLogin.ts 11ms
-src/lib/middleware/uploadImages.ts 23ms
-src/lib/middleware/usersReset.ts 26ms
-src/lib/types/cryptType.ts 5ms
-src/lib/types/fileUpload.ts 3ms
-src/lib/types/ImageRequest.ts 10ms
-src/lib/types/session.ts 4ms
-src/routes/mainRoute.ts 5ms
-src/routes/routePaths/apiRoute.ts 13ms
-src/routes/routePaths/webRoute.ts 41ms
-src/tests/helpers/jasmine tokens.ts 4ms
-src/tests/helpers/prepTestImage.ts 11ms
-src/tests/helpers/reporter.ts 5ms
-src/tests/indexSpec.ts 9ms
-src/tests/lib/functions/imageResizeSpec.ts 19ms
-src/tests/lib/middleware/imageDeleteSelectedSpec.ts 19ms
-src/tests/lib/middleware/imageDeleteThumbsSpec.ts 18ms
-src/tests/lib/middleware/imageFetchSpec.ts 55ms
-src/tests/lib/middleware/imageHistorySpec.ts 24ms
-src/tests/lib/middleware/imageListSpec.ts 14ms
-src/tests/lib/middleware/postLoginSpec.ts 15ms
-src/tests/lib/middleware/uploadImagesSpec.ts 27ms
-src/tests/routes/routePaths/apiRouteSpec.ts 12ms
-src/tests/routes/routePaths/webRouteSpec.ts 8ms
-```
-
-#### Clean dist folder
-```ssh
-npm run clean
-```
-#### Build the project
-```ssh
-npm run build
-```
-
-#### Build and Serve the project
-```ssh
-npm run serve
-```
-
-#### Run jasmine test
-```ssh
-npm run test
-```
-```diff
-Jasmine started
-HTTP server on port 3000 at http://localhost:3000/
-HTTPS server on port 4000 at https://localhost:4000/
-
-  1 Test Server Start (indexSpec)
-+    ✓ Should HTTP return status 200
-+    ✓ Should HTTPS return status 200
-
-  2 Test Image Resize Function (imageResizeSpec)
-+    ✓ Should Resize the Image Successfully
-+    ✓ Should return Error providing image fit option
-+    ✓ Should return Error wrong Format
-
-  3 Test Deleting Original Image From API (imageDeleteSelectedSpec)
-+    ✓ Should Delete a Full Image API
-+    ✓ Should SSL Delete a Full Image API
-
-  4 Test Clear Thumb Images API (imageDeleteThumbsSpec)
-+    ✓ Should Clear Thumb Images
-+    ✓ Should SSL Clear Thumb Images
-
-  5 Test Image Processing API (imageFetchSpec)
-+   ✓ Should generate thumb file for 1st time
-+    ✓ Should Process & Serve Cached thumb file
-+    ✓ Should return Error wrong Format
-+    ✓ Should return Error No file name provided
-+    ✓ Should return Requested File name Not exist
-+    ✓ Should return JSON output for image thumb
-+    ✓ Should return JSON to all thumb for original image
-+    ✓ Should SSL Enabled for Image Processed
-
-  6 Test Get Image Processing History API (imageHistorySpec)
-+    ✓ Should Get Image Processing History List
-+    ✓ Should SSL Get Image Processing History List
-
-  7 Test Getting Full Image List (imageListSpec)
-+    ✓ Should Return JSON List for all full images
-+    ✓ Should SSL Return JSON List for all full images
-
-  8 Test User Login (postLoginSpec)
-+    ✓ Should User Login & Redirected to Home Page /
-+    ✓ Should SSL User Login & Redirected to Home Page /
-
-  9 Test Upload Image API (uploadImagesSpec)
-+    ✓ Should Upload Image Successfully
-+    ✓ Should SSL Upload Image Successfully
-
-  10 Test API Endpoints Access (apiRouteSpec)
-+    ✓ Should Endpoint is Responding 200 With Json
-+    ✓ Should API Return error 404 Not found for not controlled endpoint
-+   ✓ Should SSL Enabled for Endpoint
-
-  11 Test Web Route Access (webRouteSpec)
-+    ✓ Should Web Front Forwarded to Login Page
-+    ✓ Should SSL Web Front Forwarded to Login Page
-
-+Executed 30 of 30 specs SUCCESS in 2 secs.
-
-```
-
-
 
 # App Directory 
 ```
- - dist               # transpile Typescript to es5 js to this folder
-   - env              # store ssl keys and user.json for saved password
-   - images           # store and process the resizing and caching for images
-   - logs             # store user logs and processing image logs and access server logs
-   - public           # public folder for front-end (html + css + js)
-   - spec             # configures for Jasmine Testing
-   - src              # source code for typescript *.ts
-     - lib            # function , middleware , helper , types
-     - routes         # API routs & web routs
-     - tests          # Jasmine testing
-   - package.json     # store all script and module and configuration for node project
-   - tsconfig.json    # store Typescript Configuration
-   - .prettierrc      # store Prettier configuration for code formatter
-   - .eslintrc        # store ESlint code linting for typescript
+  - .circleci         # CircleCI Configuration Folder
+    - config.yml      # CircleCI Configuration file for deployment pipeline script
+  - backend           # Backend Express & NodeJS Project folder
+  - frontend          # Frontend application React App Folder
+  - runbooks          # A container of .md file explain all function needed to run AWS Services
+  - screenshots       # Contain All Screenshots that needed for README files
+  - package.json      # store all script and module and configuration for node project
+  
 
 ```
 
-# API Documentation
+# Deployment Diagram
 
-## Image Resizing API
+![image-processing-diagram](screenshots/image-processing-diagram.jpg)
 
-### Resizing Parameters
 
+
+
+# AWS Certifcate Manager AND Cloudflare configuration
+> We user a sample domain name to work on it img-api.tk
+
+> You can use your own domain follow the steps and change img-api.tk with your domain
+* Requesting a public certificate on AWS Certifcate Manager [see documentation](https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-public.html)
+* Add img-api.tk and *.img-api.tk to your request then copy the CNAME filed to your domain DNS Provider to proccess Validation 
+![AWS-Certificates-01](screenshots/AWS-Certificates-01.png)
+![AWS-Certificates-02](screenshots/AWS-Certificates-02.png)
+* We user Cloudflare as DNS Manager so we add those DNS Records on CloudFlare Domain DNS Page
+	- Create eb.img-api.tk CNAME Record and point it to your Elastic Beanstalk Host Name
+	- Create images.img-api.tk CNAME Record and point it to your Images CloudFront Concted to Images S3 Bucket
+	- Create www.img-api.tk CNAME Record and point it to your React App CloudFront Concted to React Static S3 Bucket
+	- Create A Record with @ or img-api.tk and point it to the AWS CloudFront Server IP Address 
+	![AWS-Certificates-03](screenshots/AWS-Certificates-03.png)
+	- Create Cloudflare Client Certificates
+	![AWS-Certificates-04](screenshots/AWS-Certificates-04.png)
+	- Enable Cloudflare SSL/TLS
+	![AWS-Certificates-05](screenshots/AWS-Certificates-05.png)
+
+# AWS Configuration
+
+## RDS PostgreSQL Server
+> Follow the structured linkes to can setup and configure RDS PostgreSQL 
+
+* Setting up for Amazon RDS [see documentation](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_SettingUp.html#CHAP_SettingUp.IAM)
+* Creating a PostgreSQL DB instance and connecting to a database on a PostgreSQL DB instance [see documentation](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_GettingStarted.CreatingConnecting.PostgreSQL.html)
+* Create the Database [see it on backend documentation](backend/README.md)
+* Follow Database Schema [see it on backend database documentation](backend/Database-Schema.md)
+* Our Final Setup Screenshot
+
+![image-processing-diagram](screenshots/rds-postgres.png)
+![image-processing-diagram](screenshots/rds-postgres2.png)
+
+## Elastic Beanstalk Environment
+> Follow the structured linkes to can setup and configure Elastic Beanstalk Server
+* Creating an Elastic Beanstalk environment [see documentation](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features.environments.html)
+* The create new environment wizard [see documentation](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environments-create-wizard.html)
+* Managing Elastic Beanstalk environments with the EB CLI [see documentation](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-getting-started.html)
+* Our Final Setup Screenshot
+
+	- Environment Home
+
+	![elastic-beanstalk-01](screenshots/elastic-beanstalk-01.png)
+
+	- Environment Configuration
+
+	![elastic-beanstalk-02](screenshots/elastic-beanstalk-02.png)
+
+	- Environment Load Balance Setup
+
+	![elastic-beanstalk-03](screenshots/elastic-beanstalk-03.png)
+
+
+## S3 Bucket For React Static Site
+> Follow the structured linkes to can setup and configure AWS S3 Bucket
+
+> We Turn Off public access becuse we use AWS CloudFront to serve the static files
+* Creating a bucket [see documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html)
+* Blocking public access to your Amazon S3 storage [see documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html)
+* Enabling website hosting [see documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/EnableWebsiteHosting.html) Be sure to set Error document to index.html to can react router work propply
+* Cross-origin resource sharing (CORS)  on Permissions tab
 ```
-- [name]      # set the filename                ||  Throw Error if not provided 
-- [ext]       # set the extension               ||  seeking for default JPG // if wrong format throw error
-- [width]     # set the width                   ||  return the original image width
-- [height]    # set the height                  ||  return the original image height
-- [format]    # set the output format           ||  return the default JPG // if wrong format throw error
-- [fit]       # set the resize crop fitting      ||  return the default fill -- no crop
-- [catching]  # enable or disable cache thumb   ||  its enabled by default ** if disabled will resize even the cache exists
-- [out]       # set the final output            ||  (img) is default you can choose (json) or (all)
-
-- [noConsole]	# in development phase turn off the console out put for testing (0 | 1)
-
-
-
-[fit] cover, contain, fill, inside or outside., default 'fill'
-
-[format & ext] heic, heif, avif, jpeg, jpg, png, raw, tiff, tif, webp, gif, jp2, jpx, j2k, j2c`
-
-```
-### Request Resize Out Json
-`GET /api/images`
-
-    http://localhost:3000/api/images?name=encenadaport&ext=jpg&width=1000&height=1000&catching=1&out=json
-    
-
-
-### Response Resize Out Json
-
-    HTTP/1.1 200 OK
-    Content-Type: application/json
-
+[
     {
-    "original": "/images/full/encenadaport.jpg",
-    "thumbFile": "/images/thumb/encenadaport_1000_1000_fill.jpg",
-    "width": 1000,
-    "height": 1000,
-    "format": "jpeg"
+        "AllowedHeaders": [],
+        "AllowedMethods": [
+            "GET",
+            "HEAD"
+        ],
+        "AllowedOrigins": [
+            "*"
+        ],
+        "ExposeHeaders": []
     }
-
-### Request Resize Out Image
-`GET /api/images`
-
-    http://localhost:3000/api/images?name=encenadaport&ext=jpg&width=200&height=200&catching=1&out=img    
-
-
-### Response Resize Out Image
-
-    HTTP/1.1 200 OK
-    Content-Type: image/jpeg
-    
-![image](https://www.tameemat.com/encenadaport.jpg) 
-
-### Request All thumbs for image
-`GET /api/images`
-
-    http://localhost:3000/api/images?name=encenadaport&out=all
-    
-### Response All thumbs for image
-
-    HTTP/1.1 200 OK
-    Content-Type: application/json
-
-    {
-    "original": "/images/full/encenadaport.jpg",
-    "thumbs": [
+]
+```
+* Bucket policy on Permissions tab
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
         {
-            "thumbFile": "/images/thumb/encenadaport_1000_1000_fill.jpg",
-            "width": 1000,
-            "height": 1000,
-            "format": "jpeg"
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "your IAM ARN"
+            },
+            "Action": [
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:PutObjectAcl",
+                "s3:DeleteObject"
+            ],
+            "Resource": "arn:aws:s3:::image-processing-front-store/*"
         },
         {
-            "thumbFile": "/images/thumb/encenadaport_200_200_fill.gif",
-            "width": 200,
-            "height": 200,
-            "format": "gif"
-        },
-        {
-            "thumbFile": "/images/thumb/encenadaport_200_200_fill.jpg",
-            "width": 200,
-            "height": 200,
-            "format": "jpeg"
-        },
-        {
-            "thumbFile": "/images/thumb/encenadaport_200_200_fill.png",
-            "width": 200,
-            "height": 200,
-            "format": "png"
+            "Sid": "2",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "CLOUD FRONT ARN"
+            },
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::image-processing-front-store/*"
         }
     ]
+}
+```
+
+
+
+* Our Final Setup Screenshot
+![S3-Bucket-React-App-01](screenshots/S3-Bucket-React-App-02.png)
+![S3-Bucket-React-App-01](screenshots/S3-Bucket-React-App-01.png)
+
+## S3 Bucket For Store Images
+> Follow the structured linkes to can setup and configure AWS S3 Bucket
+
+> We Turn Off public access becuse we use AWS CloudFront to serve the images
+* Creating a bucket [see documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html)
+* Blocking public access to your Amazon S3 storage [see documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html)
+* Enabling website hosting [see documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/EnableWebsiteHosting.html) Be sure to set Error document to index.html to redirect 403 access denied
+* Cross-origin resource sharing (CORS)  on Permissions tab
+```
+[
+    {
+        "AllowedHeaders": [],
+        "AllowedMethods": [
+            "GET",
+            "HEAD"
+        ],
+        "AllowedOrigins": [
+            "*"
+        ],
+        "ExposeHeaders": []
     }
- 
-## Clear Thumb Cache
-> require user logged in with session.id to can perform this action
+]
 ```
-- [noConsole]	# in development phase turn off the console out put for testing (0 | 1)
-- [jasmine]	# in development using jasmine token to bypass login requirement (Token is safe in  helper folder)
-
+* Bucket policy on Permissions tab
 ```
-
-### Request Clear Thumbs
-`POST /api/images/delete/thumbs`
-
-    http://localhost:3000/api/images/delete/thumbs
-    
-
-### Response Clear Thumbs
-
-    HTTP/1.1 200 OK
-    Status Code: 200 OK
-    Content-Type: application/json
-
-	    {
-	   "success":true,
-	   "message":"Cached images deleted from the disk successfully"
-	   }
-
-## Get a list of images folder
-### List Parameters 
-> require user logged in with session.id to can perform this action 
+{
+	"Version": "2008-10-17",
+	"Id": "PolicyForCloudFrontPrivateContent",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": "your IAM ARN"
+			},
+			"Action": [
+				"s3:GetObject",
+				"s3:PutObject",
+				"s3:PutObjectAcl",
+				"s3:DeleteObject"
+			],
+			"Resource": "arn:aws:s3:::image-processing-thumb-store/*"
+		},
+		{
+			"Sid": "1",
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": "CLOUD FRONT ARN"
+			},
+			"Action": "s3:GetObject",
+			"Resource": "arn:aws:s3:::image-processing-thumb-store/*"
+		}
+	]
+}
 ```
-- [folder]      # select full or thumb folder     ||  default is full folder
-- [filter]      # filter images by name           ||  default no filter
-
-- [noConsole]	# in development turn off the console out put for testing (0 | 1)
-- [jasmine]	# in development using jasmine token to bypass login requirement (Token is safe in  helper folder)
-
+* Create a file index.html to serve 403 error documents and uploaded to the bucket
 ```
-
-### Request List
-`GET /api/images/list`
-
-    http://localhost:3000/api/images/list?folder=full&filter=el
-    
-
-### Response List
-
-    HTTP/1.1 200 OK
-    Status Code: 200 OK
-    Content-Type: application/json
-    
-	 {
-	   "folder":"full",
-	   "filter":"el",
-	   "images":[
-	      {
-		 "filename":"icelandwaterfall",
-		 "format":"jpg"
-	      },
-	      {
-		 "filename":"palmtunnel",
-		 "format":"jpg"
-	      }
-	   	]
-	  }
-
-## Get Images & Thumb Count
-> require user logged in with session.id to can perform this action 
-```
-- [noConsole]	# in development turn off the console out put for testing (0 | 1)
-- [jasmine]	# in development using jasmine token to bypass login requirement (Token is safe in  helper folder)
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><title>403 Access Denied</title><style>body{color: #444; margin: 0; font: normal 14px/20px Arial, Helvetica, sans-serif; height: 100%; background-color: #fff;}.Container{height: auto; min-height: 100%;}.Card{text-align: center; width: 800px; margin-left: -400px; position: absolute; top: 30%; left: 50%;}h1{margin: 0; font-size: 150px; line-height: 150px; font-weight: bold;}h2{margin-top: 20px; font-size: 30px;}</style></head><body><div class="Container"><div class="Card"><h1>403</h1><h2>Access Denied</h2><p>You don't have permission to access this object!</p></div></div></body></html>
 
 ```
 
-### Request Images & Thumb Count
-`GET /api/images/count`
-
-    http://localhost:3000/api/images/count
-    
-
-### Response Images & Thumb Count
-
-    HTTP/1.1 200 OK
-    Status Code: 200 OK
-    Content-Type: application/json
-
-	   {
-	   "fullCount":6,
-	   "thumbCount":6 
-	   }
-
-## Get Image Process History
-> require user logged in with session.id to can perform this action 
-```
-- [noConsole]	# in development turn off the console out put for testing (0 | 1)
-- [jasmine]	# in development using jasmine token to bypass login requirement (Token is safe in  helper folder)
-
-```
-
-### Request Image Process History
-`GET /api/images/history`
-
-    http://localhost:3000/api/images/history
-    
-
-### Response Image Process History
-
-    HTTP/1.1 200 OK
-    Status Code: 200 OK
-    Content-Type: application/json
-
-	   {
-	   "data":[
-	      {
-		 "num":1,
-		 "time":"Mon Feb 21 2022 11:16:33",
-		 "duration":"3ms",
-		 "process":"Cached thumb served to user for image encenadaport with format jpeg with width 200 & height 200"
-	      },
-	      {
-		 "num":2,
-		 "time":"Mon Feb 21 2022 11:14:50",
-		 "duration":"149ms",
-		 "process":"Success processing thumb for image palmtunnel to format jpeg with width 245 & height 245"
-	      },
-	      {
-		 "num":3,
-		 "time":"Mon Feb 21 2022 11:14:50",
-		 "duration":"168ms",
-		 "process":"Success processing thumb for image encenadaport to format jpeg with width 245 & height 245"
-	      },
-	   ]
-	}
-
-
-## Upload Image to Full Folder
-> require user logged in with session.id to can perform this action 
-
-### List Parameters 
-```
-- field [photo]      # the name of photo field name that the server will seeking for it to process
-
-- [noConsole]	# in development turn off the console out put for testing (0 | 1)
-- [jasmine]	# in development using jasmine token to bypass login requirement (Token is safe in  helper folder)
-
-```
-
-### Request Upload
-`POST /api/upload`
-
-    http://localhost:3000/api/upload
-    
-	------ POST Form Data / multipart/form-data
-	
-	Content-Disposition: form-data; name="photo"; filename="test-post-image.png"
-	Content-Type: image/png
-	
-	------POST Form Data
-    
-
-### Response Upload
-
-    HTTP/1.1 200 OK
-    Status Code: 200 OK
-    Content-Type: application/json
-
-	{
-	   "status":"success",
-	   "message":"File Uploaded successfully"
-	}
-
-## Reset User Password
-> require user logged in with session.id to can perform this action 
-
-### Reset Parameters 
-```
-- [password]      # Current user password
-- [newpassword]      # New user password
-- [newpassword2]      # Verify for New user Password
-
-- [noConsole]	# in development turn off the console out put for testing (0 | 1)
-- [jasmine]	# in development using jasmine token to bypass login requirement (Token is safe in  helper folder)
-
-```
-
-### Request Reset
-`POST /api/users/reset`
-
-    http://localhost:3000/api/users/reset
-    
-   	 ------ POST Form Data 
-	
-	username: admin
-	password: admin
-	newpassword: 123456
-	newpassword2: 123456
-	
-	------POST Form Data
-    
-
-### Response Reset
-
-    HTTP/1.1 200 OK
-    Status Code: 200 OK
-    Content-Type: application/json
-
-	{
-	   "success":true,
-	   "message":"Password Changed Successfully"
-	}
-
-# Access Web Control Panel
-> note: default username : admin && password : admin
-
-- Use any browser and access the url with the hostname and the port
-
-```
-http://localhost:3000/
-
-```
-## Screen Shots
-![image-processing](https://www.tameemat.com/image-processing.png) ![image-processing-2](https://www.tameemat.com/image-processing-2.png) ![image-processing-3](https://www.tameemat.com/image-processing-3.png)
-
+* Our Final Setup Screenshot
+![S3-Bucket-Images-01](screenshots/S3-Bucket-Images-01.png)
+![S3-Bucket-Images-02](screenshots/S3-Bucket-React-App-01.png)
