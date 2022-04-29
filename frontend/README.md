@@ -59,6 +59,5 @@ http://localhost:3000/
 ```
 
 ## Screen Shots
+![Image-Processing-API](https://www.tameemat.com/Image-Processing-API.png) ![Image-Processing-API-2](https://www.tameemat.com/Image-Processing-API-2.png) ![Image-Processing-API-3](https://www.tameemat.com/Image-Processing-API-3.png)
 
-![image-processing](https://www.tameemat.com/image-processing.png) ![image-processing-2](https://www.tameemat.com/image-processing-2.png)
-![image-processing-3](https://www.tameemat.com/image-processing-3.png)
