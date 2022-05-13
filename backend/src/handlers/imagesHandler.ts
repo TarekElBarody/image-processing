@@ -25,6 +25,7 @@ const imagesHandler = (apiRoute: express.Router) => {
   // Using api/images/delete/thumbs api to delete all cached thumbs
   apiRoute.post('/images/delete/thumbs', verifyTokens, imageDeleteThumbs);
 
+  
   // Using api/images/delete/selected api to delete selected full images
   apiRoute.post('/images/delete/selected', verifyTokens, imageDeleteSelected);
 
